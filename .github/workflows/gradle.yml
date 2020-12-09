@@ -24,14 +24,13 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
-
-        - name: Test Success
-            uses: rjstone/discord-webhook-notify@v1
-            if: success()
-            with:
-              severity: info
-              details: Test Succeeded!
-              webhookUrl: ${{ secrets.WEBHOOK_URL }}
+    - name: Test Success
+        uses: rjstone/discord-webhook-notify@v1
+        if: success()
+        with:
+          severity: info
+          details: Test Succeeded!
+          webhookUrl: ${{ secrets.WEBHOOK_URL }}
         - name: Test Failure
             uses: rjstone/discord-webhook-notify@v1
             if: failure()
@@ -46,3 +45,4 @@ jobs:
               severity: warn
               details: Test Cancelled!
               webhookUrl: ${{ secrets.WEBHOOK_URL }}
+
