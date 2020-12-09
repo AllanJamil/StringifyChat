@@ -25,15 +25,24 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
 
-    - uses: actions/setup-ruby@v1
-    - name: Send Webhook Notification
-      if: always()
-      env:
-        JOB_STATUS: ${{ job.status }}
-        WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
-        HOOK_OS_NAME: ${{ runner.os }}
-        WORKFLOW_NAME: ${{ github.workflow }}
-      run: |
-        git clone https://github.com/DiscordHooks/github-actions-discord-webhook.git webhook
-        bash webhook/send.sh $JOB_STATUS $WEBHOOK_URL
-      shell: bash
+        - name: Test Success
+            uses: rjstone/discord-webhook-notify@v1
+            if: success()
+            with:
+              severity: info
+              details: Test Succeeded!
+              webhookUrl: ${{ secrets.WEBHOOK_URL }}
+        - name: Test Failure
+            uses: rjstone/discord-webhook-notify@v1
+            if: failure()
+            with:
+              severity: error
+              details: Test Failed!
+              webhookUrl: ${{ secrets.WEBHOOK_URL }}
+        - name: Test Cancelled
+            uses: rjstone/discord-webhook-notify@v1
+            if: cancelled()
+            with:
+              severity: warn
+              details: Test Cancelled!
+              webhookUrl: ${{ secrets.WEBHOOK_URL }}
