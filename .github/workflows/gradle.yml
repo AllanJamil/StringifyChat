@@ -29,21 +29,21 @@ jobs:
       if: success()
       with:
         severity: info
-        details: Test Succeeded!
+        details: ${BRANCH_NAME} Test Succeeded!
         webhookUrl: ${{ secrets.WEBHOOK_URL }}
     - name: Test Failure
       uses: rjstone/discord-webhook-notify@v1
       if: failure()
       with:
         severity: error
-        details: Test Failed!
+        details: ${BRANCH_NAME} Test Failed!
         webhookUrl: ${{ secrets.WEBHOOK_URL }}
     - name: Test Cancelled
       uses: rjstone/discord-webhook-notify@v1
       if: cancelled()
       with:
         severity: warn
-        details: Test Cancelled!
+        details: ${BRANCH_NAME} Test Cancelled!
         webhookUrl: ${{ secrets.WEBHOOK_URL }}
 
 
