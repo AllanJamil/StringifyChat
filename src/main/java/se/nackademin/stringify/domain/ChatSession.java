@@ -23,12 +23,10 @@ public class ChatSession {
 
     //TODO: ScheduledFuture schedule(Runnable task, Date startTime);
     // id for internal server use
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID guid;
 
