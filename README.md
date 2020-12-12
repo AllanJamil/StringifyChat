@@ -2,6 +2,11 @@
 
 # Stringify - A Chat application
 
- 
+<p>Use these credentials to get access to the api documentation:</p>
 
-<h3><a href="https://stringify-chat.herokuapp.com/swagger-ui/">API DOCS</a></h3>
+```
+username: developer
+password: stringyDev20
+``` 
+
+<h4><a href="https://stringify-chat.herokuapp.com/swagger-ui/">View API documentation</a></h4>
