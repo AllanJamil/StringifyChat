@@ -11,4 +11,4 @@ password: stringyDev20
 
 <h4><a target="_blank" href="https://stringify-chat.herokuapp.com/swagger-ui/">View API documentation</a></h4>
 
-<h4><a href="https://condescending-benz-53ac0a.netlify.app/" target="_blank">To client </a></h4>
+<h4><a href="https://condescending-benz-53ac0a.netlify.app/" target="_blank">To client</a></h4>
