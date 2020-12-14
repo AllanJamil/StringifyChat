@@ -3,6 +3,7 @@
 <a target="_blank" href="https://condescending-benz-53ac0a.netlify.app/">
     <img style="width: 200px" src="images/stringify-logo.png">
 </a>
+
 # Stringify - A Chat application
 
 <p>Use these credentials to get access to the api documentation:</p>
