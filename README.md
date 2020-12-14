@@ -1,6 +1,6 @@
 ![Java CI with Gradle](https://github.com/AllanJamil/StringifyChat/workflows/Java%20CI%20with%20Gradle/badge.svg)
 
-<a target="_blank" href="https://stringify-chat.herokuapp.com/swagger-ui/">
+<a target="_blank" href="https://condescending-benz-53ac0a.netlify.app/">
     <img style="width: 200px" src="images/stringify-logo.png">
 </a>
 # Stringify - A Chat application
