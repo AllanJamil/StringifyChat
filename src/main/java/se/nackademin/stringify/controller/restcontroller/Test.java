@@ -1,4 +1,4 @@
-package se.nackademin.stringify.controller;
+package se.nackademin.stringify.controller.restcontroller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
