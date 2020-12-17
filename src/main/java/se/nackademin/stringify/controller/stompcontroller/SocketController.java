@@ -3,6 +3,7 @@ package se.nackademin.stringify.controller.stompcontroller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.util.HtmlUtils;
@@ -17,13 +18,14 @@ public class SocketController {
     private final SimpMessagingTemplate template;
 
     @MessageMapping("increase")
-    public void increaseCount(MessageCount messageCount) {
+    @SendTo("/topic/count")
+    public MessageCount increaseCount(MessageCount messageCount) {
         log.info(messageCount.getName());
         count++;
         String name = HtmlUtils.htmlEscape(messageCount.getName());
 
+        return new MessageCount(name, count);
 
-        template.convertAndSend("/topic/count", new MessageCount(name, count));
     }
 
 }
