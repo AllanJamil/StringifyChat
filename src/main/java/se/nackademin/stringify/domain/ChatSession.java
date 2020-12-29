@@ -26,8 +26,6 @@ public class ChatSession extends BaseEntity{
 
     //TODO: ScheduledFuture schedule(Runnable task, Date startTime);
     // id for internal server use
-
-
     @Column(unique = true)
     private String key;
     private String connectUrl;

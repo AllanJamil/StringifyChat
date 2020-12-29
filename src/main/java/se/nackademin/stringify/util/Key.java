@@ -10,8 +10,14 @@ import java.util.stream.Collectors;
 
 
 /**
- * A simple util class to generate a randomized key. All fields and methods are marked static with the use
- * of lombok <strong>@UtilityClass</strong>
+ * A class to generate a randomized alphanumeric key as a unique identifier. The length of the key is specifically 6.
+ * The Key consists of uppercase letters and at least 1 digit. There are two optional ways of creating a Key object.
+ * <ul>
+ *     <li>The <strong>{@code generate()}</strong> method creates a Key object with a randomized generated value.</li>
+ *     <li>The <strong>{@code fromString()}</strong> method creates a Key object with the given value, expected that the value is valid.</li>
+ * </ul>
+ *
+ * <em><u>WARNING:</u></em> A generated Key could potentially create a duplicate key, even though chances are very slim.
  */
 public class Key {
 
@@ -41,10 +47,10 @@ public class Key {
         List<String> alphaNum = alphaNumericToList();
         StringBuilder key = new StringBuilder(KEY_LENGTH);
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < KEY_LENGTH; i++) {
             int index = new Random().nextInt(alphaNum.size());
 
-            if (i == 5) {
+            if (i == KEY_LENGTH - 1) {
                 if (!containsADigit(key.toString())) {
                     key.append(new Random().nextInt(9));
                     return new Key(key.toString());
@@ -87,6 +93,36 @@ public class Key {
         return containsDigit;
     }
 
+    /**
+     * Checks if the given value is valid. The result is {@code true} if the argument matches the regex
+     * pattern; {@code false} otherwise
+     *
+     * @param value The value to be controlled
+     * @return {@code true} if the String matches the regex pattern; {@code false}
+     * otherwise
+     */
+    private static boolean isValidKeyValue(String value) {
+        if (value.length() != 6)
+            return false;
+
+        Pattern pattern = Pattern.compile("^(?=.*\\d)(?=.*[A-Z])(?!.*[-,.&/():;_*=!?#£$%½{}`´ ]).{0,6}$");
+        Matcher matcher = pattern.matcher(value);
+        return matcher.matches();
+    }
+
+    /**
+     * Creates a key with the given String value.
+     *
+     * @param value If the key is invalid an exception will be thrown; otherwise
+     *              a Key will be created with the given value
+     * @return a Key object with the given value
+     */
+    public static Key fromString(String value) {
+        if (value == null || !isValidKeyValue(value))
+            throw new IllegalArgumentException("Invalid key: Does not look like a Key value. e.g. \"HC94F2\"");
+
+        return new Key(value);
+    }
 
     /**
      * Compares this Key object to the specified Key object. The result is {@code
@@ -105,40 +141,8 @@ public class Key {
         return this.value.equals(otherKey.toString());
     }
 
-    /**
-     * Checks if the given value is valid. The result is {@code true} if the argument matches the regex
-     * pattern; {@code false} otherwise
-     * @param value
-     *        The value to be controlled
-     * @return {@code true} if the String matches the regex pattern; {@code false}
-     * otherwise
-     */
-    private static boolean isValidKeyValue(String value) {
-        if (value.length() != 6)
-            return false;
-
-        Pattern pattern = Pattern.compile("^(?=.*\\d)(?=.*[A-Z])(?!.*[-,.&/():;_*=!?#£$%½{}`´ ]).{0,6}$");
-        Matcher matcher = pattern.matcher(value);
-        return matcher.matches();
-    }
-
-    /**
-     * Creates a key from the String value
-     * @param value
-     *        If the key is invalid an exception will be thrown; otherwise
-     *        a Key will be created with the given value
-     * @return a Key object with the given value
-     */
-    public static Key fromString(String value) {
-        if (!isValidKeyValue(value))
-            throw new IllegalArgumentException("Invalid key: Does not look like a Key value. e.g. \"HC94F2\"");
-
-        return new Key(value);
-    }
-
     @Override
     public String toString() {
         return value;
     }
-
 }
