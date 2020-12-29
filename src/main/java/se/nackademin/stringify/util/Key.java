@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 
 /**
- * A class to generate a randomized alphanumeric key as a unique identifier. The length of the key is specifically 6.
+ * A class to generate a randomized alphanumeric Key value as a unique identifier. The length of the key is specifically 6.
  * The Key consists of uppercase letters and at least 1 digit. There are two optional ways of creating a Key object.
  * <ul>
  *     <li>The <strong>{@code generate()}</strong> method creates a Key object with a randomized generated value.</li>
@@ -105,7 +105,7 @@ public class Key {
         if (value.length() != 6)
             return false;
 
-        Pattern pattern = Pattern.compile("^(?=.*\\d)(?=.*[A-Z])(?!.*[-,.&/():;_*=!?#£$%½{}`´ ]).{0,6}$");
+        Pattern pattern = Pattern.compile("^(?=.*\\d)(?=.*[A-Z])(?!.*[-,.&/():;_*+><=!?#£$%½{}`´ ])(?!.*[a-z]).{0,6}$");
         Matcher matcher = pattern.matcher(value);
         return matcher.matches();
     }

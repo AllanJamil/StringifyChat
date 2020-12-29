@@ -16,16 +16,19 @@ public class ChatSessionDto {
     private String key;
     private String connectUrl;
     private Date expirationDate;
+    private String cipherKey;
 
     @Builder
     public ChatSessionDto(
             UUID guid,
             String key,
             String connectUrl,
+            String cipherKey,
             Date expirationDate) {
         this.guid = guid;
         this.key = key;
         this.connectUrl = connectUrl;
+        this.cipherKey = cipherKey;
         this.expirationDate = expirationDate;
     }
 

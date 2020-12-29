@@ -14,8 +14,6 @@ import java.sql.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static se.nackademin.stringify.domain.ChatSession.Status.DEFAULT;
-
 
 @Table(name = "chatsession")
 @Entity
@@ -30,7 +28,6 @@ public class ChatSession extends BaseEntity{
     private String key;
     private String connectUrl;
     private Date expirationDate;
-    private Status status = DEFAULT;
     @OneToMany(mappedBy = "chatSession")
     List<Message> messages;
 
@@ -54,10 +51,5 @@ public class ChatSession extends BaseEntity{
                 .connectUrl(this.connectUrl)
                 .expirationDate(this.expirationDate)
                 .build();
-    }
-
-    public enum Status {
-        DEFAULT,
-        EXTENDED
     }
 }

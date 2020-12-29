@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.sql.Date;
 import java.util.UUID;
 
 @Getter
@@ -23,21 +24,23 @@ public class Message extends BaseEntity{
     @NotEmpty
     @NotBlank
     @Size(min = 3, max = 30)
-    private String Sender;
+    private String from;
 
     @NotBlank
     @NotEmpty
     @Size(min = 3, max = 1000)
     private String content;
-    private String picturePath;
+    private String avatar;
+    private Date date;
     @ManyToOne(cascade = CascadeType.PERSIST)
     private ChatSession chatSession;
 
-    public Message(UUID id, UUID guid, String sender,  String content, String picturePath, ChatSession chatSession) {
+    public Message(UUID id, UUID guid, String from, String content, String avatar, Date date, ChatSession chatSession) {
         super(id, guid);
-        Sender = sender;
+        this.from = from;
         this.content = content;
-        this.picturePath = picturePath;
+        this.avatar = avatar;
+        this.date = date;
         this.chatSession = chatSession;
     }
 }
