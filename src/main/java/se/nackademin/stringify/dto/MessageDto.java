@@ -4,11 +4,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import se.nackademin.stringify.domain.Message;
+import se.nackademin.stringify.util.DateConverter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.sql.Timestamp;
 import java.util.UUID;
 
 @Getter
@@ -27,10 +27,10 @@ public class MessageDto {
     @Size(min = 3, max = 1000)
     private String content;
     private String avatar;
-    private Timestamp date;
+    private String date;
 
     @Builder
-    public MessageDto(UUID guid, String from, String content, String avatar, Timestamp date) {
+    public MessageDto(UUID guid, String from, String content, String avatar, String date) {
         this.guid = guid;
         this.from = from;
         this.content = content;
@@ -40,10 +40,11 @@ public class MessageDto {
 
     public Message convertToEntity() {
         return Message.builder()
+                .guid(this.guid)
                 .from(this.from)
                 .avatar(this.avatar)
                 .content(this.content)
-                .date(this.date)
+                .date(DateConverter.stringToDate(this.date))
                 .build();
     }
 }

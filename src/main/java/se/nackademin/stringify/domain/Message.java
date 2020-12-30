@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import se.nackademin.stringify.dto.MessageDto;
+import se.nackademin.stringify.util.DateConverter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -49,9 +50,10 @@ public class Message extends BaseEntity{
 
     public MessageDto convertToDto() {
         return MessageDto.builder()
+                .guid(this.getGuid())
                 .from(this.from)
                 .avatar(this.avatar)
-                .date(this.date)
+                .date(DateConverter.dateToString(this.date))
                 .content(this.content)
                 .guid(this.getGuid())
                 .build();
