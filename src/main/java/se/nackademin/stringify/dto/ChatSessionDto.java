@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import se.nackademin.stringify.domain.ChatSession;
 
-import java.sql.Date;
 import java.util.UUID;
 
 @Getter
@@ -15,7 +14,6 @@ public class ChatSessionDto {
     private UUID guid;
     private String key;
     private String connectUrl;
-    private Date expirationDate;
     private String cipherKey;
 
     @Builder
@@ -23,13 +21,11 @@ public class ChatSessionDto {
             UUID guid,
             String key,
             String connectUrl,
-            String cipherKey,
-            Date expirationDate) {
+            String cipherKey) {
         this.guid = guid;
         this.key = key;
         this.connectUrl = connectUrl;
         this.cipherKey = cipherKey;
-        this.expirationDate = expirationDate;
     }
 
     public ChatSession convertToEntity() {
@@ -37,7 +33,6 @@ public class ChatSessionDto {
                 .guid(this.guid)
                 .key(this.key)
                 .connectUrl(this.connectUrl)
-                .expirationDate(this.expirationDate)
                 .build();
     }
 }

@@ -1,8 +1,10 @@
 package se.nackademin.stringify.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import se.nackademin.stringify.dto.MessageDto;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -11,7 +13,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 @Getter
@@ -31,16 +33,27 @@ public class Message extends BaseEntity{
     @Size(min = 3, max = 1000)
     private String content;
     private String avatar;
-    private Date date;
+    private Timestamp date;
     @ManyToOne(cascade = CascadeType.PERSIST)
     private ChatSession chatSession;
 
-    public Message(UUID id, UUID guid, String from, String content, String avatar, Date date, ChatSession chatSession) {
+    @Builder
+    public Message(UUID id, UUID guid, String from, String content, String avatar, Timestamp date, ChatSession chatSession) {
         super(id, guid);
         this.from = from;
         this.content = content;
         this.avatar = avatar;
         this.date = date;
         this.chatSession = chatSession;
+    }
+
+    public MessageDto convertToDto() {
+        return MessageDto.builder()
+                .from(this.from)
+                .avatar(this.avatar)
+                .date(this.date)
+                .content(this.content)
+                .guid(this.getGuid())
+                .build();
     }
 }

@@ -10,7 +10,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.sql.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,7 +26,6 @@ public class ChatSession extends BaseEntity{
     @Column(unique = true)
     private String key;
     private String connectUrl;
-    private Date expirationDate;
     @OneToMany(mappedBy = "chatSession")
     List<Message> messages;
 
@@ -36,12 +34,10 @@ public class ChatSession extends BaseEntity{
             UUID id,
             UUID guid,
             String key,
-            String connectUrl,
-            Date expirationDate) {
+            String connectUrl) {
         super(id, guid);
         this.key = key;
         this.connectUrl = connectUrl;
-        this.expirationDate = expirationDate;
     }
 
     public ChatSessionDto convertToDto() {
@@ -49,7 +45,6 @@ public class ChatSession extends BaseEntity{
                 .guid(getGuid())
                 .key(this.key)
                 .connectUrl(this.connectUrl)
-                .expirationDate(this.expirationDate)
                 .build();
     }
 }
