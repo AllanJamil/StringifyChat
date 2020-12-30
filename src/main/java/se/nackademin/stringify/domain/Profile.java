@@ -41,7 +41,7 @@ public class Profile extends BaseEntity{
 
     public ProfileDto convertToDto() {
         return ProfileDto.builder()
-                .guid(this.getGuid())
+                .guid(getGuid())
                 .name(this.name)
                 .avatar(this.avatar)
                 .date(DateConverter.dateToString(getCreated()))

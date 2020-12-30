@@ -13,6 +13,7 @@ import se.nackademin.stringify.domain.Message;
 import se.nackademin.stringify.dto.MessageDto;
 import se.nackademin.stringify.dto.ProfileDto;
 import se.nackademin.stringify.exception.ChatSessionNotFoundException;
+import se.nackademin.stringify.exception.ProfileNotFoundException;
 import se.nackademin.stringify.service.ChatService;
 
 import javax.validation.Valid;
@@ -36,14 +37,29 @@ public class ChatController {
     }
 
 
-    @MessageMapping("/welcome/{chatSessionGuid}")
-    @SendTo("queue/welcome/{chatSessionGuid}")
-    public ConnectionNotification notifyOnConnect(@DestinationVariable UUID chatSessionGuid, @Payload @Valid ProfileDto profile) {
+    @MessageMapping("/connect/{chatSessionGuid}")
+    @SendTo("queue/connect/{chatSessionGuid}")
+    public ConnectionNotification notifyOnConnect(
+            @DestinationVariable UUID chatSessionGuid,
+            @Payload @Valid ProfileDto profile) {
         try {
             return chatService.storeProfileConnected(
                     chatSessionGuid,
                     profile.convertToEntity());
         } catch (ChatSessionNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @MessageMapping("/disconnect/{chatSessionGuid}")
+    @SendTo("/queue/disconnect/{chatSessionGuid}")
+    public ConnectionNotification notifyOnDisconnect(
+            @DestinationVariable UUID chatSessionGuid,
+            @Payload @Valid ProfileDto profile) {
+
+        try {
+            return chatService.removeProfileDisconnected(chatSessionGuid, profile.convertToEntity());
+        } catch (ProfileNotFoundException | ChatSessionNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }

@@ -2,6 +2,7 @@ package se.nackademin.stringify.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import se.nackademin.stringify.controller.response.ConnectionNotification;
 import se.nackademin.stringify.controller.response.Meeting;
 import se.nackademin.stringify.domain.ChatSession;
@@ -30,7 +31,7 @@ public class ChatService {
     private ChatSession getChatSession(UUID chatSessionGuid) throws ChatSessionNotFoundException {
         return chatSessionRepository.findByGuid(chatSessionGuid)
                 .orElseThrow(() -> new ChatSessionNotFoundException(
-                        "Chat session with id " + chatSessionGuid + " does not exists."
+                        String.format("No meetings with the id \"%s\" was found.", chatSessionGuid)
                 ));
     }
 
@@ -60,27 +61,47 @@ public class ChatService {
         if (isDeleted == 0)
             throw new ProfileNotFoundException("Unable to find profile");
 
+        ChatSession chatSessionAfterProfileDeletion = getChatSession(chatSessionGuid);
+
+        if (chatSessionAfterProfileDeletion.getMessages().size() == 0) {
+            chatSessionRepository.delete(chatSessionAfterProfileDeletion);
+        }
+
+
         return new ConnectionNotification(profile.convertToDto(), String.format("%s has disconnected.", profile.getName()));
 
     }
 
     public Meeting createNewMeeting(@Valid Profile profile) {
-        ChatSession savedChatSession = chatSessionRepository.save(new ChatSession());
 
+        ChatSession savedChatSession = chatSessionRepository.save(new ChatSession());
         savedChatSession.setConnectUrl("https://stringify-chat.netlify.app/profile?connect=" + savedChatSession.getGuid());
         savedChatSession.setKey(Key.generate().toString());
-
         ChatSession meeting = chatSessionRepository.save(savedChatSession);
-        profile.setChatSession(meeting);
-        profileRepository.save(profile);
 
-        return new Meeting(profile.convertToDto(), meeting.convertToDto());
+        //TODO: fix bug; BaseEntity to generate Guid for Profile class as well
+        profile.setGuid(UUID.randomUUID());
+        profile.setChatSession(meeting);
+        Profile connectedProfile = profileRepository.save(profile);
+
+        return new Meeting(connectedProfile.convertToDto(), meeting.convertToDto());
     }
 
+    @Transactional(readOnly = true)
     public ChatSession joinMeetingByKey(String key) throws ChatSessionNotFoundException, ConnectionLimitException {
         ChatSession chatSession = chatSessionRepository.findByKey(key)
                 .orElseThrow(() -> new ChatSessionNotFoundException(
                         String.format("No meetings with the key \"%s\" was found.", key)));
+
+        if (chatSession.getProfilesConnected().size() == 5)
+            throw new ConnectionLimitException("Meeting has reached the maximum number of connections.");
+
+        return chatSession;
+    }
+
+    @Transactional(readOnly = true)
+    public ChatSession joinMeetingByGuid(UUID chatId) throws ChatSessionNotFoundException, ConnectionLimitException {
+        ChatSession chatSession = getChatSession(chatId);
 
         if (chatSession.getProfilesConnected().size() == 5)
             throw new ConnectionLimitException("Meeting has reached the maximum number of connections.");

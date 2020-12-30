@@ -41,7 +41,6 @@ public class DateConverter {
      * @return Representational string date of the given Timestamp
      */
     public String dateToString(Timestamp date) {
-        int index = date.toString().lastIndexOf(":");
-        return date.toString().substring(0, index);
+        return date.toLocalDateTime().toString().replace("T", " ");
     }
 }

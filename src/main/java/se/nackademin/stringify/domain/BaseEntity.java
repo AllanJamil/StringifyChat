@@ -19,8 +19,8 @@ public class BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID guid;
+    @Column(nullable = false, unique = true)
+    private UUID guid = UUID.randomUUID();
 
     @CreationTimestamp
     @Column(nullable = false)
