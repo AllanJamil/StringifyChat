@@ -2,11 +2,12 @@ package se.nackademin.stringify.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import se.nackademin.stringify.domain.Message;
+import se.nackademin.stringify.domain.Profile;
 
 import java.util.UUID;
 
 @Repository
-public interface MessageRepository extends JpaRepository<Message, UUID> {
+public interface ProfileRepository extends JpaRepository<Profile, UUID> {
 
+    long deleteByGuidAndChatSession_Id(UUID guid, UUID chatSession_id);
 }

@@ -6,15 +6,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import se.nackademin.stringify.dto.ChatSessionDto;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
 
 
-@Table(name = "chatsession")
+@Table(name = "chatsessions")
 @Entity
 @Getter
 @Setter
@@ -26,8 +23,10 @@ public class ChatSession extends BaseEntity{
     @Column(unique = true)
     private String key;
     private String connectUrl;
-    @OneToMany(mappedBy = "chatSession")
+    @OneToMany(mappedBy = "chatSession", cascade = CascadeType.ALL)
     List<Message> messages;
+    @OneToMany (mappedBy = "chatSession", cascade = CascadeType.ALL)
+    List<Profile> profilesConnected;
 
     @Builder
     public ChatSession(
