@@ -13,7 +13,7 @@ import se.nackademin.stringify.dto.ProfileDto;
 import se.nackademin.stringify.exception.ChatSessionNotFoundException;
 import se.nackademin.stringify.exception.ConnectionLimitException;
 import se.nackademin.stringify.exception.InvalidKeyException;
-import se.nackademin.stringify.service.ChatService;
+import se.nackademin.stringify.service.MeetingService;
 
 import javax.validation.Valid;
 import java.util.UUID;
@@ -23,7 +23,7 @@ import java.util.UUID;
 @RequestMapping("api/meetings")
 public class MeetingController {
 
-    private final ChatService chatService;
+    private final MeetingService meetingService;
 
     @ApiOperation(
             value = "Stores a new chat session with the connected profile.",
@@ -36,7 +36,7 @@ public class MeetingController {
     @ApiResponse(code = 200, message = "A new meeting has been created with given profile")
     @PostMapping("new-meeting")
     public Meeting newMeeting(@RequestBody @Valid ProfileDto profile) {
-       return chatService.createNewMeeting(profile.convertToEntity());
+       return meetingService.createNewMeeting(profile.convertToEntity());
     }
 
     @ApiOperation(
@@ -57,7 +57,7 @@ public class MeetingController {
     @GetMapping("join-meeting/key/{key}")
     public ChatSessionDto joinWithKey(@PathVariable String key) {
         try {
-            return chatService.joinMeetingByKey(key).convertToDto();
+            return meetingService.joinMeetingByKey(key).convertToDto();
         } catch (ChatSessionNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (ConnectionLimitException e) {
@@ -84,7 +84,7 @@ public class MeetingController {
     @GetMapping("join-meeting/chat-id/{chatId}")
     public ChatSessionDto joinWithGuid(@PathVariable UUID chatId) {
         try {
-            return chatService.joinMeetingByGuid(chatId).convertToDto();
+            return meetingService.joinMeetingByGuid(chatId).convertToDto();
 
         } catch (ChatSessionNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
