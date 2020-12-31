@@ -1,5 +1,6 @@
 package se.nackademin.stringify.controller.response;
 
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,9 +10,9 @@ import se.nackademin.stringify.dto.ProfileDto;
 @Getter
 @Setter
 @AllArgsConstructor
+@ApiModel(description = "A response object for a user providing a profile when requesting to start a new meeting")
 public class Meeting {
 
     private ProfileDto profile;
-
     private ChatSessionDto chatSession;
 }

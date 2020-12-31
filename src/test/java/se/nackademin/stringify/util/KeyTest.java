@@ -89,10 +89,11 @@ class KeyTest {
     @DisplayName("Keys with different values and same Type of class should return false")
     @Test
     void testShouldReturnFalseWhenValueAreDifferent() {
+        Key k1 = Key.fromString("HLD65C");
         Key k2 = Key.fromString("H25JKA");
 
-        assertThat(key.equals(k2)).isFalse();
-        assertThat(key.equals(null)).isFalse();
+        assertThat(k1.equals(k2)).isFalse();
+        assertThat(k1.equals(null)).isFalse();
     }
 
 }

@@ -101,7 +101,7 @@ public class Key {
      * @return {@code true} if the String matches the regex pattern; {@code false}
      * otherwise
      */
-    private static boolean isValidKeyValue(String value) {
+    public static boolean isValidKey(String value) {
         if (value.length() != 6)
             return false;
 
@@ -118,7 +118,7 @@ public class Key {
      * @return a Key object with the given value
      */
     public static Key fromString(String value) {
-        if (value == null || !isValidKeyValue(value))
+        if (value == null || !isValidKey(value))
             throw new IllegalArgumentException("Invalid key: Does not look like a Key value. e.g. \"HC94F2\"");
 
         return new Key(value);

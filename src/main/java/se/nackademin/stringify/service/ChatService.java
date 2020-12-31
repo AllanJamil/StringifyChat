@@ -11,6 +11,7 @@ import se.nackademin.stringify.domain.Profile;
 import se.nackademin.stringify.dto.ProfileDto;
 import se.nackademin.stringify.exception.ChatSessionNotFoundException;
 import se.nackademin.stringify.exception.ConnectionLimitException;
+import se.nackademin.stringify.exception.InvalidKeyException;
 import se.nackademin.stringify.exception.ProfileNotFoundException;
 import se.nackademin.stringify.repository.ChatSessionRepository;
 import se.nackademin.stringify.repository.MessageRepository;
@@ -31,7 +32,7 @@ public class ChatService {
     private ChatSession getChatSession(UUID chatSessionGuid) throws ChatSessionNotFoundException {
         return chatSessionRepository.findByGuid(chatSessionGuid)
                 .orElseThrow(() -> new ChatSessionNotFoundException(
-                        String.format("No meetings with the id \"%s\" was found.", chatSessionGuid)
+                        String.format("No meetings with the id %s was found.", chatSessionGuid)
                 ));
     }
 
@@ -88,10 +89,14 @@ public class ChatService {
     }
 
     @Transactional(readOnly = true)
-    public ChatSession joinMeetingByKey(String key) throws ChatSessionNotFoundException, ConnectionLimitException {
+    public ChatSession joinMeetingByKey(String key) throws ChatSessionNotFoundException, ConnectionLimitException, InvalidKeyException {
+
+        if (!Key.isValidKey(key))
+            throw new InvalidKeyException();
+
         ChatSession chatSession = chatSessionRepository.findByKey(key)
                 .orElseThrow(() -> new ChatSessionNotFoundException(
-                        String.format("No meetings with the key \"%s\" was found.", key)));
+                        String.format("No meetings with the key %s was found.", key)));
 
         if (chatSession.getProfilesConnected().size() == 5)
             throw new ConnectionLimitException("Meeting has reached the maximum number of connections.");
