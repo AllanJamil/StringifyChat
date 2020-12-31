@@ -58,7 +58,6 @@ class KeyTest {
                 allIsUppercase = false;
             }
         }
-
         assertThat(allIsUppercase).isTrue();
     }
 
