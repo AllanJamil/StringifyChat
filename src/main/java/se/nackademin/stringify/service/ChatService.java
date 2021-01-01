@@ -55,10 +55,7 @@ public class ChatService implements IService {
         if (chatSessionAfterProfileDeletion.getMessages().size() == 0) {
             chatSessionRepository.delete(chatSessionAfterProfileDeletion);
         }
-
-
         return new ConnectionNotification(profile.convertToDto(), String.format("%s has disconnected.", profile.getName()));
-
     }
 
     @Override
