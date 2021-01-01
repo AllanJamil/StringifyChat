@@ -24,7 +24,7 @@ public class MessageController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("latest/{page}")
+    @GetMapping("previous/{page}")
     public List<MessageDto> providePreviousMessages(@RequestParam(name = "chatid") UUID chatGuid, @PathVariable int page) {
         return messageService.getPreviousMessage(chatGuid, page).stream()
                 .map(Message::convertToDto)
