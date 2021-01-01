@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import se.nackademin.stringify.domain.Profile;
 
@@ -14,6 +15,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @ApiModel(description = "A object used for a client to be identified with during a chat session")
 public class ProfileDto {
 

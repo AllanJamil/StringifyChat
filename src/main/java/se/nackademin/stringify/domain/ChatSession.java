@@ -25,7 +25,7 @@ public class ChatSession extends BaseEntity{
     private String connectUrl;
     @OneToMany(mappedBy = "chatSession", cascade = CascadeType.ALL)
     List<Message> messages;
-    @OneToMany (mappedBy = "chatSession", cascade = CascadeType.ALL)
+    @OneToMany (mappedBy = "chatSession", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     List<Profile> profilesConnected;
 
     @Builder

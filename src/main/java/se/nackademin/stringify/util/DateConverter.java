@@ -50,6 +50,11 @@ public class DateConverter {
     public String dateToString(Timestamp date) throws IllegalArgumentException {
         if (date == null)
             throw new IllegalArgumentException("Cannot convert null to String");
-        return date.toLocalDateTime().toString().replace("T", " ");
+
+        String stringDate = date.toLocalDateTime().toString();
+
+        return stringDate.replace("T", " ")
+                .substring(0, stringDate.lastIndexOf(":"));
     }
+
 }
