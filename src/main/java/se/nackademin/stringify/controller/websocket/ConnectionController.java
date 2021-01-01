@@ -19,6 +19,9 @@ import se.nackademin.stringify.service.ConnectionService;
 import javax.validation.Valid;
 import java.util.UUID;
 
+/**
+ * A controller class to handle the websocket connection to a chatSession
+ */
 @Controller
 @RequiredArgsConstructor
 public class ConnectionController {
@@ -35,7 +38,6 @@ public class ConnectionController {
            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
-
 
     @MessageMapping("/connect/{chatSessionGuid}")
     @SendTo("queue/connect/{chatSessionGuid}")
