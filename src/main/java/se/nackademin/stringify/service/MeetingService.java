@@ -17,6 +17,10 @@ import se.nackademin.stringify.util.Key;
 import javax.validation.Valid;
 import java.util.UUID;
 
+
+/**
+ * A service class for handling chatSessions.
+ */
 @Service
 @RequiredArgsConstructor
 public class MeetingService implements IService {
@@ -25,6 +29,12 @@ public class MeetingService implements IService {
     private final ChatSessionRepository chatSessionRepository;
     private final ProfileRepository profileRepository;
 
+    /**
+     * Creates a new chatSession and persists it to the database together with the given profile.
+     *
+     * @param profile to start a new chat session
+     * @return a response object {@code Meeting.class} containing the persisted chatSession and profile
+     */
     public Meeting createNewMeeting(@Valid Profile profile) {
 
         ChatSession savedChatSession = chatSessionRepository.save(new ChatSession());
@@ -40,8 +50,17 @@ public class MeetingService implements IService {
         return new Meeting(connectedProfile.convertToDto(), meeting.convertToDto());
     }
 
+    /**
+     * Finds and returns a ChatSession from the database if any chatSession exists with the given key.
+     *
+     * @param key The key identified with the chatSession.
+     * @return Returns a chatSession to connect with.
+     * @throws ChatSessionNotFoundException When a chat session with the given key could not be found.
+     * @throws ConnectionLimitException When the chatSession already has too many connections. (limit: 5)
+     * @throws InvalidKeyException When the key format is invalid.
+     */
     @Transactional(readOnly = true)
-    public ChatSession joinMeetingByKey(String key) throws ChatSessionNotFoundException, ConnectionLimitException, InvalidKeyException {
+    public ChatSession getChatSessionByKey(String key) throws ChatSessionNotFoundException, ConnectionLimitException, InvalidKeyException {
 
         if (!Key.isValidKey(key))
             throw new InvalidKeyException();
@@ -56,8 +75,16 @@ public class MeetingService implements IService {
         return chatSession;
     }
 
+    /**
+     * Finds and returns a ChatSession from the database if any chatSession exists with the given guid.
+     *
+     * @param chatId The guid identified with the chatSession.
+     * @return Returns a chatSession to connect with.
+     * @throws ChatSessionNotFoundException When a chat session with the given chatId could not be found.
+     * @throws ConnectionLimitException When the chatSession already has too many connections. (limit: 5)
+     */
     @Transactional(readOnly = true)
-    public ChatSession joinMeetingByGuid(UUID chatId) throws ChatSessionNotFoundException, ConnectionLimitException {
+    public ChatSession getMeetingByGuid(UUID chatId) throws ChatSessionNotFoundException, ConnectionLimitException {
         ChatSession chatSession = getChatSession(chatId);
 
         if (chatSession.getProfilesConnected().size() == 5)

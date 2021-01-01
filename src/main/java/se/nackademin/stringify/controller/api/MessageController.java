@@ -21,18 +21,6 @@ public class MessageController {
 
     private final MessageService messageService;
 
-    @ApiOperation(
-            value = "Find the latest messages by chat-id",
-            produces = "application/json",
-            notes = "Returns a collection of the 5 latest messages from a chat session",
-            response = MessageDto.class
-    )
-    @GetMapping("latest")
-    public List<MessageDto> latestMessageHistory(@RequestParam(name = "chatid") UUID chatGuid) {
-        return messageService.getLatestMessages(chatGuid).stream()
-                .map(Message::convertToDto)
-                .collect(Collectors.toList());
-    }
 
     @ApiOperation(
             value = "Find a number of messages by chat-id and page number",
@@ -40,9 +28,9 @@ public class MessageController {
             notes = "Returns a collection of 5 messages in the given page number from a chat session",
             response = MessageDto.class
     )
-    @GetMapping("previous")
-    public List<MessageDto> providePreviousMessages(@RequestParam(name = "chatid") UUID chatGuid, @RequestParam int page) {
-        return messageService.getPreviousMessage(chatGuid, page).stream()
+    @GetMapping("history")
+    public List<MessageDto> getHistoryMessages(@RequestParam(name = "chatid") UUID chatGuid, @RequestParam int page) {
+        return messageService.getMessage(chatGuid, page).stream()
                 .map(Message::convertToDto)
                 .collect(Collectors.toList());
     }

@@ -57,7 +57,7 @@ public class MeetingController {
     @GetMapping("join-meeting/key/{key}")
     public ChatSessionDto joinWithKey(@PathVariable String key) {
         try {
-            return meetingService.joinMeetingByKey(key).convertToDto();
+            return meetingService.getChatSessionByKey(key).convertToDto();
         } catch (ChatSessionNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (ConnectionLimitException e) {
@@ -84,7 +84,7 @@ public class MeetingController {
     @GetMapping("join-meeting/chat-id/{chatId}")
     public ChatSessionDto joinWithGuid(@PathVariable UUID chatId) {
         try {
-            return meetingService.joinMeetingByGuid(chatId).convertToDto();
+            return meetingService.getMeetingByGuid(chatId).convertToDto();
 
         } catch (ChatSessionNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
