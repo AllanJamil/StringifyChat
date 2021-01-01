@@ -24,7 +24,7 @@ public class MessageService {
     @Transactional(readOnly = true)
     public List<Message> getLatestMessages(UUID chatGuid) {
         Pageable sortedByDate =
-                PageRequest.of(0, 5, Sort.by("date").descending());
+                PageRequest.of(0, 5, Sort.by("date").ascending());
 
         return messageRepository.findAllByChatSession_Guid(chatGuid, sortedByDate);
     }
@@ -32,7 +32,7 @@ public class MessageService {
     @Transactional(readOnly = true)
     public List<Message> getPreviousMessage(UUID chatGuid, int page) {
         Pageable sortedByDate =
-                PageRequest.of(page, 5, Sort.by("date").descending());
+                PageRequest.of(page, 5, Sort.by("date").ascending());
 
         return messageRepository.findAllByChatSession_Guid(chatGuid, sortedByDate);
     }
