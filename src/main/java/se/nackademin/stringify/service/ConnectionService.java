@@ -2,7 +2,7 @@ package se.nackademin.stringify.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import se.nackademin.stringify.controller.response.ConnectionNotification;
+import se.nackademin.stringify.controller.response.ConnectionNotice;
 import se.nackademin.stringify.domain.ChatSession;
 import se.nackademin.stringify.domain.Message;
 import se.nackademin.stringify.domain.Profile;
@@ -18,7 +18,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ChatService implements IService {
+public class ConnectionService implements IService {
 
     private final MessageRepository messageRepository;
     private final ChatSessionRepository chatSessionRepository;
@@ -31,17 +31,17 @@ public class ChatService implements IService {
         return messageRepository.save(message);
     }
 
-    public ConnectionNotification storeProfileConnected(UUID chatSessionGuid, @Valid Profile profile)
+    public ConnectionNotice storeProfileConnected(UUID chatSessionGuid, @Valid Profile profile)
             throws ChatSessionNotFoundException {
         ChatSession chatSession = getChatSession(chatSessionGuid);
 
         profile.setChatSession(chatSession);
         ProfileDto connectedProfile = profileRepository.save(profile).convertToDto();
 
-        return new ConnectionNotification(connectedProfile, String.format("%s has connected to the meeting.", connectedProfile.getName()));
+        return new ConnectionNotice(connectedProfile, String.format("%s has connected to the meeting.", connectedProfile.getName()));
     }
 
-    public ConnectionNotification removeProfileDisconnected(UUID chatSessionGuid, @Valid Profile profile)
+    public ConnectionNotice removeProfileDisconnected(UUID chatSessionGuid, @Valid Profile profile)
             throws ProfileNotFoundException, ChatSessionNotFoundException {
 
         ChatSession chatSession = getChatSession(chatSessionGuid);
@@ -55,7 +55,7 @@ public class ChatService implements IService {
         if (chatSessionAfterProfileDeletion.getMessages().size() == 0) {
             chatSessionRepository.delete(chatSessionAfterProfileDeletion);
         }
-        return new ConnectionNotification(profile.convertToDto(), String.format("%s has disconnected.", profile.getName()));
+        return new ConnectionNotice(profile.convertToDto(), String.format("%s has disconnected.", profile.getName()));
     }
 
     @Override

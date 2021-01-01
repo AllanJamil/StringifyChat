@@ -8,7 +8,7 @@ import se.nackademin.stringify.dto.ProfileDto;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ConnectionNotification {
+public class ConnectionNotice {
 
     private ProfileDto profile;
     private String welcomeMessage;
