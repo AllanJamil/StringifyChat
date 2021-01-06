@@ -85,8 +85,8 @@ class MessageControllerTest extends AbstractIntegrationTest {
                 new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(),
                         new TypeReference<List<MessageDto>>() {});
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
         assertThat(messages).hasSize(5);
-
     }
+
+
 }
