@@ -87,6 +87,4 @@ class MessageControllerTest extends AbstractIntegrationTest {
 
         assertThat(messages).hasSize(5);
     }
-
-
 }
