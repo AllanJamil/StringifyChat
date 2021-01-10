@@ -6,13 +6,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import se.nackademin.stringify.AbstractIntegrationTest;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.hamcrest.core.StringContains.containsString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -23,12 +23,10 @@ class PingControllerTest extends AbstractIntegrationTest {
 
     @Test
     void pingShouldReturnPongResponse() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/api/ping")
+        mockMvc.perform(get("/api/ping")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andReturn();
-
-        assertThat(mvcResult.getResponse().getContentAsString()).isEqualTo("pong");
+                .andExpect(content().string(containsString("pong")));
     }
 }

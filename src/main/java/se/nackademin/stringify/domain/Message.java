@@ -22,7 +22,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "messages")
 @NoArgsConstructor
-public class Message extends BaseEntity{
+public class Message extends BaseEntity {
 
     @NotEmpty
     @NotBlank

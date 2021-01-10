@@ -55,12 +55,14 @@ public class MeetingController {
                     "could not provide with information due to a connection limit.")
     })
     @GetMapping("join-meeting")
-    public ChatSessionDto joinWithKey(@RequestParam(required = false) String key, @RequestParam(required = false) UUID chatId) {
-        final String NO_PARAM_FOUND = "No key value or chat id was given!";
+    public ChatSessionDto joinWithKey(@RequestParam(required = false) String key,
+                                      @RequestParam(required = false, name = "chat-id") UUID chatId) {
+        final String NO_PARAM_FOUND = "No key value or chat id was provided.";
 
         if (key == null && chatId == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, NO_PARAM_FOUND);
         }
+
         try {
             if (key != null) {
                 return meetingService.getChatSessionByKey(key).convertToDto();
