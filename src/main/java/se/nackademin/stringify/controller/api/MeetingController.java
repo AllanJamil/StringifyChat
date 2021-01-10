@@ -36,28 +36,37 @@ public class MeetingController {
     @ApiResponse(code = 200, message = "A new meeting has been created with given profile")
     @PostMapping("new-meeting")
     public Meeting newMeeting(@RequestBody @Valid ProfileDto profile) {
-       return meetingService.createNewMeeting(profile.convertToEntity());
+        return meetingService.createNewMeeting(profile.convertToEntity());
     }
 
     @ApiOperation(
-            value = "Finds a chat session by Key",
+            value = "Finds a chat session by Key or Chat Id",
             produces = "application/json",
             consumes = "application/json",
-            notes = "Provide a key in order to get information about the chat session",
+            notes = "Provide either a key or a chat id in order to get information about the chat session",
             response = ChatSessionDto.class
     )
-    @ApiResponses( value = {
-            @ApiResponse(code = 200, message = "OK: A chat session with the given key has been found.",
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK: A chat session with the given key or chat id has been found.",
                     response = ChatSessionDto.class),
-            @ApiResponse(code = 404, message = "Not found: A chat session with the given key could not be found."),
-            @ApiResponse(code = 400, message = "Bad request: Invalid key."),
-            @ApiResponse(code = 204, message = "No content: A chat session with the given key has been found but " +
+            @ApiResponse(code = 404, message = "Not found: A chat session with the given key or chat id could not be found."),
+            @ApiResponse(code = 400, message = "Bad request: Invalid key or chat id."),
+            @ApiResponse(code = 204, message = "No content: A chat session with the given key or chat id has been found but " +
                     "could not provide with information due to a connection limit.")
     })
-    @GetMapping("join-meeting/key/{key}")
-    public ChatSessionDto joinWithKey(@PathVariable String key) {
+    @GetMapping("join-meeting")
+    public ChatSessionDto joinWithKey(@RequestParam(required = false) String key, @RequestParam(required = false) UUID chatId) {
+        final String NO_PARAM_FOUND = "No key value or chat id was given!";
+
+        if (key == null && chatId == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, NO_PARAM_FOUND);
+        }
         try {
-            return meetingService.getChatSessionByKey(key).convertToDto();
+            if (key != null) {
+                return meetingService.getChatSessionByKey(key).convertToDto();
+            } else {
+                return meetingService.getMeetingByGuid(chatId).convertToDto();
+            }
         } catch (ChatSessionNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (ConnectionLimitException e) {
@@ -66,31 +75,4 @@ public class MeetingController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
-
-    @ApiOperation(
-            value = "Finds a chat session by guid",
-            produces = "application/json",
-            consumes = "application/json",
-            notes = "Provide a guid in order to get information about the chat session",
-            response = ChatSessionDto.class
-    )
-    @ApiResponses( value = {
-            @ApiResponse(code = 200, message = "OK: A chat session with the given guid has been found.",
-                    response = ChatSessionDto.class),
-            @ApiResponse(code = 404, message = "Not found: A chat session with the given guid could not be found."),
-            @ApiResponse(code = 204, message = "No content: A chat session with the given guid has been found but " +
-                    "could not provide with information due to a connection limit.")
-    })
-    @GetMapping("join-meeting/chat-id/{chatId}")
-    public ChatSessionDto joinWithGuid(@PathVariable UUID chatId) {
-        try {
-            return meetingService.getMeetingByGuid(chatId).convertToDto();
-
-        } catch (ChatSessionNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (ConnectionLimitException e) {
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT, e.getMessage());
-        }
-    }
-
 }
