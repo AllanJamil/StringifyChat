@@ -19,6 +19,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class MessageServiceTest {
@@ -50,10 +53,11 @@ class MessageServiceTest {
         }
 
         given(chatSessionRepository.existsByGuid(any(UUID.class))).willReturn(true);
-
         given(messageRepository.findAllByChatSession_Guid(any(UUID.class), any())).willReturn(mockMessages);
 
         List<Message> message = messageService.getMessage(UUID.randomUUID(), 0);
+
+        then(messageRepository).should(times(1)).findAllByChatSession_Guid(any(), any());
 
         assertThat(message).isNotEmpty();
     }
