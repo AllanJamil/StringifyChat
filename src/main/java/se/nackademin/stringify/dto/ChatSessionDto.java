@@ -14,7 +14,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @ApiModel(description = "A chat session provided by the server")
-public class ChatSessionDto {
+public class ChatSessionDto implements IConvertEntity<ChatSession> {
 
     @ApiModelProperty(notes = "An id used by the client side and used for connecting chat session")
     private UUID guid;
@@ -39,6 +39,8 @@ public class ChatSessionDto {
         this.cipherKey = cipherKey;
     }
 
+
+    @Override
     public ChatSession convertToEntity() {
         return ChatSession.builder()
                 .guid(this.guid)

@@ -17,7 +17,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @ApiModel(description = "A object used for a client to be identified with during a chat session")
-public class ProfileDto {
+public class ProfileDto implements IConvertEntity<Profile> {
 
     @ApiModelProperty(notes = "An id used by the client side")
     private UUID guid;
@@ -40,6 +40,7 @@ public class ProfileDto {
         this.date = date;
     }
 
+    @Override
     public Profile convertToEntity() {
         return Profile.builder()
                 .guid(this.guid)

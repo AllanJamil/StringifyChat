@@ -22,7 +22,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "messages")
 @NoArgsConstructor
-public class Message extends BaseEntity {
+public class Message extends BaseEntity implements IConvertDto<MessageDto> {
 
     @NotEmpty
     @NotBlank
@@ -48,6 +48,8 @@ public class Message extends BaseEntity {
         this.chatSession = chatSession;
     }
 
+
+    @Override
     public MessageDto convertToDto() {
         return MessageDto.builder()
                 .guid(this.getGuid())

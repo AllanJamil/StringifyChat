@@ -16,7 +16,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ChatSession extends BaseEntity{
+public class ChatSession extends BaseEntity implements IConvertDto<ChatSessionDto> {
 
     //TODO: ScheduledFuture schedule(Runnable task, Date startTime);
     // id for internal server use
@@ -39,6 +39,7 @@ public class ChatSession extends BaseEntity{
         this.connectUrl = connectUrl;
     }
 
+    @Override
     public ChatSessionDto convertToDto() {
         return ChatSessionDto.builder()
                 .guid(getGuid())

@@ -21,7 +21,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "profiles")
 @NoArgsConstructor
-public class Profile extends BaseEntity{
+public class Profile extends BaseEntity implements IConvertDto<ProfileDto> {
 
     @NotEmpty
     @NotBlank
@@ -39,6 +39,8 @@ public class Profile extends BaseEntity{
         this.chatSession = chatSession;
     }
 
+
+    @Override
     public ProfileDto convertToDto() {
         return ProfileDto.builder()
                 .guid(getGuid())
@@ -47,5 +49,4 @@ public class Profile extends BaseEntity{
                 .date(DateConverter.dateToString(getCreated()))
                 .build();
     }
-
 }

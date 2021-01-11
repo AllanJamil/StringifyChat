@@ -19,7 +19,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @ApiModel(description = "A message object to be published to users connected to a chat session")
-public class MessageDto {
+public class MessageDto implements IConvertEntity<Message> {
 
     @ApiModelProperty(notes = "An id used by the client side")
     private UUID guid;
@@ -51,6 +51,8 @@ public class MessageDto {
         this.date = date;
     }
 
+
+    @Override
     public Message convertToEntity() {
         return Message.builder()
                 .guid(this.guid)
