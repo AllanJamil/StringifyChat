@@ -13,4 +13,6 @@ public interface ChatSessionRepository extends JpaRepository<ChatSession, UUID> 
     Optional<ChatSession> findByGuid(UUID guid);
 
     Optional<ChatSession> findByKey(String key);
+
+    boolean existsByGuid(UUID guid);
 }

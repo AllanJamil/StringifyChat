@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import se.nackademin.stringify.domain.Message;
 import se.nackademin.stringify.util.DateConverter;
@@ -16,6 +17,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @ApiModel(description = "A message object to be published to users connected to a chat session")
 public class MessageDto {
 

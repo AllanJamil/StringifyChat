@@ -7,6 +7,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.nackademin.stringify.domain.Message;
+import se.nackademin.stringify.exception.ChatSessionNotFoundException;
+import se.nackademin.stringify.repository.ChatSessionRepository;
 import se.nackademin.stringify.repository.MessageRepository;
 
 import java.util.List;
@@ -20,6 +22,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MessageService {
 
+    private final ChatSessionRepository chatSessionRepository;
     private final MessageRepository messageRepository;
 
     /**
@@ -27,12 +30,15 @@ public class MessageService {
      * The list is sorted by ascending dates.
      *
      * @param chatGuid the {@code UUID} chat guid in relation with the messages
-     * @param page The of page number of a list of messages
+     * @param page     The of page number of a list of messages
      * @return A list of messages ({@code List<Message>}) with a size of 5
      */
     @Transactional(readOnly = true)
-    public List<Message> getMessage(UUID chatGuid, int page) {
+    public List<Message> getMessage(UUID chatGuid, int page) throws ChatSessionNotFoundException {
         final int AMOUNT_OF_ELEMENTS = 5;
+
+        if (!chatSessionRepository.existsByGuid(chatGuid))
+            throw new ChatSessionNotFoundException(String.format("No meetings with the id %s was found.", chatGuid));
 
         Pageable sortedByDate =
                 PageRequest.of(page, AMOUNT_OF_ELEMENTS, Sort.by("date").ascending());
