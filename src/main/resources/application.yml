@@ -1,4 +1,3 @@
-
 #Allows messages to be sent e.g. from ResponseStatusException
 server:
   error:

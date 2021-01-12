@@ -69,7 +69,8 @@ class MessageControllerTest extends AbstractIntegrationTest {
 
         String jsonList = result.getResponse().getContentAsString();
 
-        List<MessageDto> messages = new ObjectMapper().readValue(jsonList, new TypeReference<List<MessageDto>>() {});
+        List<MessageDto> messages = new ObjectMapper().readValue(jsonList, new TypeReference<List<MessageDto>>() {
+        });
 
         assertThat(messages).hasSize(0);
     }
@@ -112,7 +113,8 @@ class MessageControllerTest extends AbstractIntegrationTest {
 
         String jsonList = result.getResponse().getContentAsString();
 
-        List<MessageDto> messages = new ObjectMapper().readValue(jsonList, new TypeReference<List<MessageDto>>() {});
+        List<MessageDto> messages = new ObjectMapper().readValue(jsonList, new TypeReference<List<MessageDto>>() {
+        });
 
         assertThat(messages.size()).isGreaterThan(0);
     }

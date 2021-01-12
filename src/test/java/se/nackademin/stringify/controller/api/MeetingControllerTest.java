@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.testcontainers.shaded.com.fasterxml.jackson.core.JsonProcessingException;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import se.nackademin.stringify.AbstractIntegrationTest;
 import se.nackademin.stringify.controller.response.Meeting;
@@ -49,7 +48,7 @@ class MeetingControllerTest extends AbstractIntegrationTest {
     private ProfileDto profileDto;
 
     @BeforeEach
-    void setUp() throws JsonProcessingException {
+    void setUp() {
         UUID guid = UUID.randomUUID();
         mockChatSession = ChatSession.builder()
                 .id(UUID.randomUUID())

@@ -35,7 +35,7 @@ public class ConnectionController {
         try {
             return connectionService.storeMessage(chatSessionGuid, message).convertToDto();
         } catch (ChatSessionNotFoundException e) {
-           throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 

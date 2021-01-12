@@ -20,7 +20,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/stringify-chat")
                 .setAllowedOrigins("http://localhost:3000",
-                "https://stringify-chat.netlify.app")
+                        "https://stringify-chat.netlify.app")
                 .withSockJS();
     }
 

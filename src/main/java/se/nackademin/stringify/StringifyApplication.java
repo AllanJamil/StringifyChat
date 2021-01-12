@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class StringifyApplication {
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         SpringApplication.run(StringifyApplication.class, args);
 /*        String uri = "amqps://pzbbhejr:Ntqpxp8wrq4dsn_pgZweAc8yX5KdtdBo@bonobo.rmq.cloudamqp.com/pzbbhejr";
 

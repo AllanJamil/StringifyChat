@@ -39,7 +39,6 @@ public class ChatSessionDto implements IConvertEntity<ChatSession> {
         this.cipherKey = cipherKey;
     }
 
-
     @Override
     public ChatSession convertToEntity() {
         return ChatSession.builder()

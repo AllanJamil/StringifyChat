@@ -21,8 +21,6 @@ import java.util.stream.Collectors;
  */
 public class Key {
 
-    private final String value;
-
     /**
      * A sorted sequence of characters for an alphanumeric String
      */
@@ -31,6 +29,7 @@ public class Key {
      * The length of the generated key
      */
     private static final int KEY_LENGTH = 6;
+    private final String value;
 
     public Key(String value) {
         this.value = value;

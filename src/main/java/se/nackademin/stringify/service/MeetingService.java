@@ -81,7 +81,7 @@ public class MeetingService implements IService {
      * @param chatId The guid identified with the chatSession.
      * @return Returns a chatSession to connect with.
      * @throws ChatSessionNotFoundException When a chat session with the given chatId could not be found.
-     * @throws ConnectionLimitException When the chatSession already has too many connections. (limit: 5)
+     * @throws ConnectionLimitException     When the chatSession already has too many connections. (limit: 5)
      */
     @Transactional(readOnly = true)
     public ChatSession getMeetingByGuid(UUID chatId) throws ChatSessionNotFoundException, ConnectionLimitException {

@@ -39,7 +39,7 @@ class KeyTest {
 
         boolean containsAtLeastOneDigit = false;
         for (char aChar : chars) {
-            if (Character.isDigit(aChar))  {
+            if (Character.isDigit(aChar)) {
                 containsAtLeastOneDigit = true;
                 break;
             }

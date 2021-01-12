@@ -20,8 +20,8 @@ public class DateConverter {
     /**
      * String pattern to be converted to Timestamp
      */
-    private String PATTERN = "yyyy-MM-dd HH:mm";
-    private String DATE_REGEX = "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (2[0-3]|[01][0-9]):[0-5][0-9]$";
+    private final String PATTERN = "yyyy-MM-dd HH:mm";
+    private final String DATE_REGEX = "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (2[0-3]|[01][0-9]):[0-5][0-9]$";
 
     /**
      * Converts the string representation of a date to a {@code java.sql.Timestamp}
