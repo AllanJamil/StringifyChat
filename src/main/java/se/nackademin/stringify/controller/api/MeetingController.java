@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import se.nackademin.stringify.controller.response.Meeting;
@@ -13,9 +14,11 @@ import se.nackademin.stringify.dto.ProfileDto;
 import se.nackademin.stringify.exception.ChatSessionNotFoundException;
 import se.nackademin.stringify.exception.ConnectionLimitException;
 import se.nackademin.stringify.exception.InvalidKeyException;
+import se.nackademin.stringify.service.EmailService;
 import se.nackademin.stringify.service.MeetingService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import java.util.UUID;
 
 @RestController
@@ -24,6 +27,7 @@ import java.util.UUID;
 public class MeetingController {
 
     private final MeetingService meetingService;
+    private final EmailService emailService;
 
     @ApiOperation(
             value = "Stores a new chat session with the connected profile.",
@@ -76,5 +80,12 @@ public class MeetingController {
         } catch (InvalidKeyException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
+    }
+
+    //Quick test
+    @PostMapping("send-email")
+    public void newEmail(@Email @RequestParam("email") String email, @RequestParam String profileName) {
+            emailService.sendInvitationEmail
+                    (email, profileName, "https://stringify-chat.netlify.app/profile");
     }
 }
