@@ -36,7 +36,7 @@ public class EmailService {
 
     public void sendInvitationEmail(String sendTo, String invitedBy, String connectUrl) {
         Mail mail = new Mail();
-        mail.setFrom(new Email("allanjamil_91@hotmail.com"));
+        mail.setFrom(new Email("noreply@stringify.com"));
         mail.setTemplateId("d-ee2942f110ba453b9f208384338c0824");
 
         Personalization personalization = new Personalization();
