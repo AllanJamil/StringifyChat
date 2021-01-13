@@ -84,7 +84,7 @@ public class MeetingController {
 
     //Quick test
     @PostMapping("send-email")
-    public void newEmail(@Email @RequestParam("email") String email, @RequestParam String profileName) {
+    public void newEmail(@Email @RequestParam("Email") String email, @RequestParam("Name") String profileName) {
             emailService.sendInvitationEmail
                     (email, profileName, "https://stringify-chat.netlify.app/profile");
     }
