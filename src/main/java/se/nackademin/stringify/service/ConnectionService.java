@@ -16,6 +16,9 @@ import se.nackademin.stringify.repository.ProfileRepository;
 import javax.validation.Valid;
 import java.util.UUID;
 
+import static se.nackademin.stringify.controller.response.ConnectionNotice.ConnectionStatus.CONNECTED;
+import static se.nackademin.stringify.controller.response.ConnectionNotice.ConnectionStatus.DISCONNECTED;
+
 @Service
 @RequiredArgsConstructor
 public class ConnectionService implements IService {
@@ -38,7 +41,9 @@ public class ConnectionService implements IService {
         profile.setChatSession(chatSession);
         ProfileDto connectedProfile = profileRepository.save(profile).convertToDto();
 
-        return new ConnectionNotice(connectedProfile, String.format("%s has connected to the meeting.", connectedProfile.getName()));
+        return new ConnectionNotice(connectedProfile,
+                String.format("%s has connected to the meeting.",
+                        connectedProfile.getName()), CONNECTED);
     }
 
     public ConnectionNotice removeProfileDisconnected(UUID chatSessionGuid, @Valid Profile profile)
@@ -52,10 +57,13 @@ public class ConnectionService implements IService {
 
         ChatSession chatSessionAfterProfileDeletion = getChatSession(chatSessionGuid);
 
-        if (chatSessionAfterProfileDeletion.getMessages().size() == 0) {
+        if (chatSessionAfterProfileDeletion.getProfilesConnected().size() == 0) {
             chatSessionRepository.delete(chatSessionAfterProfileDeletion);
         }
-        return new ConnectionNotice(profile.convertToDto(), String.format("%s has disconnected.", profile.getName()));
+
+        return new ConnectionNotice(profile.convertToDto(),
+                String.format("%s has disconnected.", profile.getName()),
+                DISCONNECTED);
     }
 
     @Override

@@ -11,5 +11,11 @@ import se.nackademin.stringify.dto.ProfileDto;
 public class ConnectionNotice {
 
     private ProfileDto profile;
-    private String welcomeMessage;
+    private String connectionMessage;
+    private ConnectionStatus status;
+
+    public enum ConnectionStatus {
+        CONNECTED,
+        DISCONNECTED
+    }
 }
