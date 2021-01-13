@@ -11,7 +11,7 @@ import se.nackademin.stringify.domain.Message;
 import se.nackademin.stringify.dto.MessageDto;
 import se.nackademin.stringify.dto.ProfileDto;
 import se.nackademin.stringify.exception.ChatSessionNotFoundException;
-import se.nackademin.stringify.service.ConnectionService;
+import se.nackademin.stringify.service.LiveCommunicationService;
 
 import java.util.UUID;
 
@@ -23,13 +23,13 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
-class ConnectionControllerTest {
+class LiveCommunicationControllerTest {
 
     @InjectMocks
-    ConnectionController connectionController;
+    LiveCommunicationController liveCommunicationController;
 
     @Mock
-    ConnectionService connectionService;
+    LiveCommunicationService liveCommunicationService;
 
     private ProfileDto mockProfileDto;
 
@@ -56,41 +56,41 @@ class ConnectionControllerTest {
     void testTransmitWithValidMessageShouldReturnMessageDto() throws ChatSessionNotFoundException {
 
 
-        given(connectionService.storeMessage(any(UUID.class), any(Message.class))).willReturn(mockMessageDto.convertToEntity());
+        given(liveCommunicationService.storeMessage(any(UUID.class), any(Message.class))).willReturn(mockMessageDto.convertToEntity());
 
-        assertThat(connectionController.transmit(UUID.randomUUID(), mockMessageDto))
+        assertThat(liveCommunicationController.transmit(UUID.randomUUID(), mockMessageDto))
                 .isInstanceOf(MessageDto.class);
 
 
-        then(connectionService).should(times(1)).storeMessage(any(UUID.class), any(Message.class));
+        then(liveCommunicationService).should(times(1)).storeMessage(any(UUID.class), any(Message.class));
     }
 
     @Test
     void testTransmitMessageWithNoDateShouldThrowIllegalArgumentException() throws ChatSessionNotFoundException {
         mockMessageDto.setDate(null);
 
-        assertThatThrownBy(() -> connectionController.transmit(UUID.randomUUID(), mockMessageDto)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> liveCommunicationController.transmit(UUID.randomUUID(), mockMessageDto)).isInstanceOf(IllegalArgumentException.class);
 
-        then(connectionService).should(times(0)).storeMessage(any(UUID.class), any(Message.class));
+        then(liveCommunicationService).should(times(0)).storeMessage(any(UUID.class), any(Message.class));
     }
 
     @Test
     void testTransmitMessageWithNoSenderNameShouldThrowNullPointerException() throws ChatSessionNotFoundException {
         mockMessageDto.setFrom(null);
 
-        assertThatThrownBy(() -> connectionController.transmit(UUID.randomUUID(), mockMessageDto)).isInstanceOf(NullPointerException.class);
+        assertThatThrownBy(() -> liveCommunicationController.transmit(UUID.randomUUID(), mockMessageDto)).isInstanceOf(NullPointerException.class);
 
-        then(connectionService).should(times(1)).storeMessage(any(UUID.class), any(Message.class));
+        then(liveCommunicationService).should(times(1)).storeMessage(any(UUID.class), any(Message.class));
     }
 
     @Test
     void chatIdWithNonExistingChatSessionShouldThrowResponseStatusException() throws ChatSessionNotFoundException {
-        given(connectionService.storeMessage(any(UUID.class), any(Message.class))).willThrow(ChatSessionNotFoundException.class);
+        given(liveCommunicationService.storeMessage(any(UUID.class), any(Message.class))).willThrow(ChatSessionNotFoundException.class);
 
-        assertThatThrownBy(() -> connectionController.transmit(UUID.randomUUID(), mockMessageDto))
+        assertThatThrownBy(() -> liveCommunicationController.transmit(UUID.randomUUID(), mockMessageDto))
                 .isInstanceOf(ResponseStatusException.class);
 
-        then(connectionService).should(times(1)).storeMessage(any(UUID.class), any(Message.class));
+        then(liveCommunicationService).should(times(1)).storeMessage(any(UUID.class), any(Message.class));
     }
 
 /*    @Test

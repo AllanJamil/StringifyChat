@@ -14,7 +14,7 @@ import se.nackademin.stringify.dto.MessageDto;
 import se.nackademin.stringify.dto.ProfileDto;
 import se.nackademin.stringify.exception.ChatSessionNotFoundException;
 import se.nackademin.stringify.exception.ProfileNotFoundException;
-import se.nackademin.stringify.service.ConnectionService;
+import se.nackademin.stringify.service.LiveCommunicationService;
 
 import javax.validation.Valid;
 import java.util.UUID;
@@ -24,16 +24,16 @@ import java.util.UUID;
  */
 @Controller
 @RequiredArgsConstructor
-public class ConnectionController {
+public class LiveCommunicationController {
 
-    private final ConnectionService connectionService;
+    private final LiveCommunicationService liveCommunicationService;
 
     @MessageMapping("/send/meeting/{chatSessionGuid}")
     @SendTo("queue/meeting/{chatSessionGuid}")
     public MessageDto transmit(@DestinationVariable UUID chatSessionGuid, @Payload @Valid MessageDto messageDto) {
         Message message = messageDto.convertToEntity();
         try {
-            return connectionService.storeMessage(chatSessionGuid, message).convertToDto();
+            return liveCommunicationService.storeMessage(chatSessionGuid, message).convertToDto();
         } catch (ChatSessionNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -45,7 +45,7 @@ public class ConnectionController {
             @DestinationVariable UUID chatSessionGuid,
             @Payload @Valid ProfileDto profile) {
         try {
-            return connectionService.storeProfileConnected(
+            return liveCommunicationService.storeProfileConnected(
                     chatSessionGuid,
                     profile.convertToEntity());
         } catch (ChatSessionNotFoundException e) {
@@ -60,7 +60,7 @@ public class ConnectionController {
             @Payload @Valid ProfileDto profile) {
 
         try {
-            return connectionService.removeProfileDisconnected(chatSessionGuid, profile.convertToEntity());
+            return liveCommunicationService.removeProfileDisconnected(chatSessionGuid, profile.convertToEntity());
         } catch (ProfileNotFoundException | ChatSessionNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

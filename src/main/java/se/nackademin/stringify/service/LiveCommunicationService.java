@@ -16,12 +16,9 @@ import se.nackademin.stringify.repository.ProfileRepository;
 import javax.validation.Valid;
 import java.util.UUID;
 
-import static se.nackademin.stringify.controller.response.ConnectionNotice.ConnectionStatus.CONNECTED;
-import static se.nackademin.stringify.controller.response.ConnectionNotice.ConnectionStatus.DISCONNECTED;
-
 @Service
 @RequiredArgsConstructor
-public class ConnectionService implements IService {
+public class LiveCommunicationService implements IService {
 
     private final MessageRepository messageRepository;
     private final ChatSessionRepository chatSessionRepository;
@@ -43,7 +40,7 @@ public class ConnectionService implements IService {
 
         return new ConnectionNotice(connectedProfile,
                 String.format("%s has connected to the meeting.",
-                        connectedProfile.getName()), CONNECTED);
+                        connectedProfile.getName()));
     }
 
     public ConnectionNotice removeProfileDisconnected(UUID chatSessionGuid, @Valid Profile profile)
@@ -62,8 +59,7 @@ public class ConnectionService implements IService {
         }
 
         return new ConnectionNotice(profile.convertToDto(),
-                String.format("%s has disconnected.", profile.getName()),
-                DISCONNECTED);
+                String.format("%s has disconnected.", profile.getName()));
     }
 
     @Override

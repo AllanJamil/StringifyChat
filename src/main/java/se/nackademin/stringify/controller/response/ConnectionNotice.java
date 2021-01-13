@@ -12,10 +12,5 @@ public class ConnectionNotice {
 
     private ProfileDto profile;
     private String connectionMessage;
-    private ConnectionStatus status;
 
-    public enum ConnectionStatus {
-        CONNECTED,
-        DISCONNECTED
-    }
 }
