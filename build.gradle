@@ -41,7 +41,7 @@ dependencies {
     testImplementation 'org.testcontainers:postgresql'
     testImplementation 'org.testcontainers:rabbitmq'
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
-    implementation 'com.sendgrid:sendgrid-java:4.6.7'
+    implementation 'com.sendgrid:sendgrid-java'
 
 
     implementation 'com.rabbitmq:amqp-client:5.10.0'
