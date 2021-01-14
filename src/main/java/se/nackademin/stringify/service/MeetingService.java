@@ -38,7 +38,7 @@ public class MeetingService implements IService {
     public Meeting createNewMeeting(@Valid Profile profile) {
 
         ChatSession savedChatSession = chatSessionRepository.save(new ChatSession());
-        savedChatSession.setConnectUrl("https://stringify-chat.netlify.app/profile?connect=" + savedChatSession.getGuid());
+        savedChatSession.setConnectUrl("https://stringify-chat.netlify.app/connect?chat-id=" + savedChatSession.getGuid());
         savedChatSession.setKey(Key.generate().toString());
         ChatSession meeting = chatSessionRepository.save(savedChatSession);
 
