@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import se.nackademin.stringify.controller.response.Meeting;
@@ -83,8 +82,8 @@ public class MeetingController {
     }
 
     //Quick test
-    @PostMapping("send-email")
-    public void newEmail(@Email @RequestParam("Email") String email, @RequestParam("Name") String profileName) {
+    @PostMapping("invite")
+    public void newEmail(@Email @RequestParam("email") String email, @RequestParam("name") String profileName) {
             emailService.sendInvitationEmail
                     (email, profileName, "https://stringify-chat.netlify.app/profile");
     }

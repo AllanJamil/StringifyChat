@@ -29,15 +29,12 @@ public class ProfileDto implements IConvertEntity<Profile> {
     private String name;
     @ApiModelProperty(notes = "A avatar used by the client-side", example = "avatar20")
     private String avatar;
-    @ApiModelProperty(notes = "A date for presenting a connection notice to other users")
-    private String date;
 
     @Builder
-    public ProfileDto(UUID guid, String name, String avatar, String date) {
+    public ProfileDto(UUID guid, String name, String avatar) {
         this.guid = guid;
         this.name = name;
         this.avatar = avatar;
-        this.date = date;
     }
 
     @Override
