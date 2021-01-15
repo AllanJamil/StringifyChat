@@ -38,7 +38,6 @@ class LiveCommunicationControllerTest {
     @BeforeEach
     void setUp() {
         mockProfileDto = ProfileDto.builder()
-                .date("2021-01-01 16:45")
                 .guid(UUID.randomUUID())
                 .name("John Doe")
                 .avatar("avatar1")
