@@ -36,12 +36,15 @@ public class LiveCommunicationService implements IService {
             throws ChatSessionNotFoundException {
         ChatSession chatSession = getChatSession(chatSessionGuid);
 
+        Optional<Profile> optionalProfile = profileRepository.findByGuid(profile.getGuid());
         ProfileDto connectedProfile;
-        if (profileRepository.existsByGuid(profile.getGuid())) {
+
+        if (optionalProfile.isEmpty()) {
+            profile.setGuid(UUID.randomUUID());
             profile.setChatSession(chatSession);
             connectedProfile = profileRepository.save(profile).convertToDto();
         } else
-            connectedProfile = profile.convertToDto();
+            connectedProfile = optionalProfile.get().convertToDto();
 
 
         return new ConnectionNotice(connectedProfile,

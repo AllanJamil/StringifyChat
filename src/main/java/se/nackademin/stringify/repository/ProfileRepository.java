@@ -10,7 +10,7 @@ import java.util.UUID;
 @Repository
 public interface ProfileRepository extends JpaRepository<Profile, UUID> {
 
-    boolean existsByGuid(UUID guid);
+    Optional<Profile> findByGuid(UUID guid);
 
     long deleteByGuidAndChatSession_Id(UUID guid, UUID chatSession_id);
 }

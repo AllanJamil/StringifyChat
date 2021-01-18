@@ -29,7 +29,7 @@ public class LiveCommunicationController {
     private final LiveCommunicationService liveCommunicationService;
 
     @MessageMapping("/send/meeting/{chatSessionGuid}")
-    @SendTo("queue/meeting/{chatSessionGuid}")
+    @SendTo("/queue/meeting/{chatSessionGuid}")
     public MessageDto transmit(@DestinationVariable UUID chatSessionGuid, @Payload @Valid MessageDto messageDto) {
         Message message = messageDto.convertToEntity();
         try {
@@ -40,7 +40,7 @@ public class LiveCommunicationController {
     }
 
     @MessageMapping("/connect/{chatSessionGuid}")
-    @SendTo("queue/connect/{chatSessionGuid}")
+    @SendTo("/queue/connect/{chatSessionGuid}")
     public ConnectionNotice notifyOnConnect(
             @DestinationVariable UUID chatSessionGuid,
             @Payload @Valid ProfileDto profile) {

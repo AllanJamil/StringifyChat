@@ -58,8 +58,8 @@ public class MeetingController {
             @ApiResponse(code = 204, message = "No content: A chat session with the given key or chat id has been found but " +
                     "could not provide with information due to a connection limit.")
     })
-    @GetMapping("join-meeting")
-    public ChatSessionDto joinWithKey(@RequestParam(required = false) String key,
+    @GetMapping("find-meeting")
+    public ChatSessionDto findMeeting(@RequestParam(required = false) String key,
                                       @RequestParam(required = false, name = "chat-id") UUID chatId) {
         final String NO_PARAM_FOUND = "No key value or chat id was provided.";
 
