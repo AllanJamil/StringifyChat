@@ -44,6 +44,8 @@ public class LiveCommunicationController {
     public ConnectionNotice notifyOnConnect(
             @DestinationVariable UUID chatSessionGuid,
             @Payload @Valid ProfileDto profile) {
+        System.out.println(chatSessionGuid);
+        System.out.println(profile.getName());
         try {
             return liveCommunicationService.storeProfileConnected(
                     chatSessionGuid,

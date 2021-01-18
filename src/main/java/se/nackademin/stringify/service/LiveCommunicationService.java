@@ -14,6 +14,7 @@ import se.nackademin.stringify.repository.MessageRepository;
 import se.nackademin.stringify.repository.ProfileRepository;
 
 import javax.validation.Valid;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -35,8 +36,13 @@ public class LiveCommunicationService implements IService {
             throws ChatSessionNotFoundException {
         ChatSession chatSession = getChatSession(chatSessionGuid);
 
-        profile.setChatSession(chatSession);
-        ProfileDto connectedProfile = profileRepository.save(profile).convertToDto();
+        ProfileDto connectedProfile;
+        if (profileRepository.existsByGuid(profile.getGuid())) {
+            profile.setChatSession(chatSession);
+            connectedProfile = profileRepository.save(profile).convertToDto();
+        } else
+            connectedProfile = profile.convertToDto();
+
 
         return new ConnectionNotice(connectedProfile,
                 String.format("%s has connected to the meeting.",

@@ -1,3 +1,4 @@
+/*
 package se.nackademin.stringify.configuration;
 
 import org.springframework.context.annotation.Bean;
@@ -17,12 +18,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.addAllowedOrigin(CorsConfiguration.ALL);
         corsConfig.applyPermitDefaultValues();
         corsConfig.addAllowedMethod("DELETE");
 
+
         UrlBasedCorsConfigurationSource source = new
                 UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfig.applyPermitDefaultValues());
+        source.registerCorsConfiguration("/**", corsConfig);
         return source;
     }
 
@@ -47,3 +50,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .roles("DEV");
     }
 }
+*/

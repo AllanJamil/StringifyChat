@@ -38,6 +38,7 @@ public class MeetingController {
     )
     @ApiResponse(code = 200, message = "A new meeting has been created with given profile")
     @PostMapping("new-meeting")
+    @CrossOrigin
     public Meeting newMeeting(@RequestBody @Valid ProfileDto profile) {
         return meetingService.createNewMeeting(profile.convertToEntity());
     }
