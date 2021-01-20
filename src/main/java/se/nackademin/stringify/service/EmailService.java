@@ -7,18 +7,22 @@ import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Email;
 import com.sendgrid.helpers.mail.objects.Personalization;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+@Slf4j
 @Service
+@EnableAsync
 public class EmailService {
 
     private SendGrid sg = new SendGrid(System.getenv("SG_API_KEY"));
 
-    private void sendMail(Mail mail) {
+    @Async
+    void sendMail(Mail mail) {
 
         Request request = new Request();
         try {
@@ -30,10 +34,11 @@ public class EmailService {
             System.out.println(response.getBody());
             System.out.println(response.getHeaders());
         } catch (IOException ex) {
-            Logger.getLogger(EmailService.class.getName()).log(Level.WARNING, ex.getMessage());
+            log.warn(ex.getMessage());
         }
     }
 
+    @Async
     public void sendInvitationEmail(String sendTo, String invitedBy, String connectUrl) {
         Mail mail = new Mail();
         mail.setFrom(new Email("noreply@stringify.com"));

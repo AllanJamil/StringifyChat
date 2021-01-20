@@ -63,7 +63,6 @@ class MeetingControllerTest extends AbstractIntegrationTest {
                 .build();
 
         mockChatSession = chatSessionRepository.save(mockChatSession);
-
     }
 
     @DisplayName("The given profile should get persisted to DB together with a ChatSession")

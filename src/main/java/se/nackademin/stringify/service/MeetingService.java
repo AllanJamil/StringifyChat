@@ -60,7 +60,7 @@ public class MeetingService implements IService {
      * @throws InvalidKeyException When the key format is invalid.
      */
     @Transactional(readOnly = true)
-    public ChatSession getChatSessionByKey(String key) throws ChatSessionNotFoundException, ConnectionLimitException, InvalidKeyException {
+    public ChatSession getChatSessionByKey(String key) {
 
         if (!Key.isValidKey(key))
             throw new InvalidKeyException();

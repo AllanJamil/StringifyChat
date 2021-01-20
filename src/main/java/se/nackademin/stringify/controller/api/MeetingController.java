@@ -10,9 +10,6 @@ import org.springframework.web.server.ResponseStatusException;
 import se.nackademin.stringify.controller.response.Meeting;
 import se.nackademin.stringify.dto.ChatSessionDto;
 import se.nackademin.stringify.dto.ProfileDto;
-import se.nackademin.stringify.exception.ChatSessionNotFoundException;
-import se.nackademin.stringify.exception.ConnectionLimitException;
-import se.nackademin.stringify.exception.InvalidKeyException;
 import se.nackademin.stringify.service.EmailService;
 import se.nackademin.stringify.service.MeetingService;
 
@@ -67,25 +64,17 @@ public class MeetingController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, NO_PARAM_FOUND);
         }
 
-        try {
-            if (key != null) {
-                return meetingService.getChatSessionByKey(key).convertToDto();
-            } else {
-                return meetingService.getMeetingByGuid(chatId).convertToDto();
-            }
-        } catch (ChatSessionNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (ConnectionLimitException e) {
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT, e.getMessage());
-        } catch (InvalidKeyException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        if (key != null) {
+            return meetingService.getChatSessionByKey(key).convertToDto();
         }
+
+        return meetingService.getMeetingByGuid(chatId).convertToDto();
     }
 
     //Quick test
     @PostMapping("invite")
     public void newEmail(@Email @RequestParam("email") String email, @RequestParam("name") String profileName) {
-            emailService.sendInvitationEmail
-                    (email, profileName, "https://stringify-chat.netlify.app/profile");
+        emailService.sendInvitationEmail
+                (email, profileName, "https://stringify-chat.netlify.app/profile");
     }
 }

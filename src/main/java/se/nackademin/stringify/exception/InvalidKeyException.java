@@ -1,6 +1,6 @@
 package se.nackademin.stringify.exception;
 
-public class InvalidKeyException extends Exception {
+public class InvalidKeyException extends RuntimeException {
 
 
     public InvalidKeyException() {
