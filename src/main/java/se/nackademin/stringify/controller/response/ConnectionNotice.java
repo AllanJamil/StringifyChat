@@ -3,7 +3,7 @@ package se.nackademin.stringify.controller.response;
 import lombok.Getter;
 import lombok.Setter;
 import se.nackademin.stringify.dto.ProfileDto;
-import se.nackademin.stringify.util.DateConverter;
+import se.nackademin.stringify.util.DateUtil;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -19,6 +19,6 @@ public class ConnectionNotice {
     public ConnectionNotice(ProfileDto profile, String connectionMessage) {
         this.profile = profile;
         this.connectionMessage = connectionMessage;
-        date = DateConverter.dateToString(new Timestamp(new Date().getTime()));
+        date = DateUtil.dateToString(new Timestamp(new Date().getTime()));
     }
 }

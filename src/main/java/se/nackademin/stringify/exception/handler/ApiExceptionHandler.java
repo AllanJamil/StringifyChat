@@ -10,7 +10,7 @@ import se.nackademin.stringify.exception.ConnectionLimitException;
 import se.nackademin.stringify.exception.InvalidKeyException;
 import se.nackademin.stringify.exception.ProfileNotFoundException;
 import se.nackademin.stringify.exception.response.ErrorResponse;
-import se.nackademin.stringify.util.DateConverter;
+import se.nackademin.stringify.util.DateUtil;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -40,7 +40,7 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(ErrorResponse.builder()
                 .exceptionType(ex.getClass().getSimpleName())
                 .message(ex.getMessage())
-                .timestamp(DateConverter.dateToString(new Timestamp(new Date().getTime())))
+                .timestamp(DateUtil.dateToString(new Timestamp(new Date().getTime())))
                 .status(status)
                 .build(), status);
     }

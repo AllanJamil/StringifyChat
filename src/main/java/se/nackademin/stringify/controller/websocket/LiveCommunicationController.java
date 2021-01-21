@@ -15,6 +15,7 @@ import se.nackademin.stringify.dto.ProfileDto;
 import se.nackademin.stringify.exception.ChatSessionNotFoundException;
 import se.nackademin.stringify.exception.ProfileNotFoundException;
 import se.nackademin.stringify.service.LiveCommunicationService;
+import se.nackademin.stringify.util.DateUtil;
 
 import javax.validation.Valid;
 import java.util.UUID;
@@ -31,6 +32,8 @@ public class LiveCommunicationController {
     @MessageMapping("/send/meeting/{chatSessionGuid}")
     @SendTo("/queue/meeting/{chatSessionGuid}")
     public MessageDto transmit(@DestinationVariable UUID chatSessionGuid, @Payload @Valid MessageDto messageDto) {
+        messageDto.setDate(DateUtil.now());
+        System.out.println(messageDto.getContent());
         Message message = messageDto.convertToEntity();
         try {
             return liveCommunicationService.storeMessage(chatSessionGuid, message).convertToDto();

@@ -28,6 +28,8 @@ public class LiveCommunicationService implements IService {
     public Message storeMessage(UUID chatSessionId, @Valid Message message) throws ChatSessionNotFoundException {
         ChatSession chatSession = getChatSession(chatSessionId);
 
+        message.setId(UUID.randomUUID());
+        message.setGuid(UUID.randomUUID());
         message.setChatSession(chatSession);
         return messageRepository.save(message);
     }

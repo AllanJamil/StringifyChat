@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import se.nackademin.stringify.domain.Message;
-import se.nackademin.stringify.util.DateConverter;
+import se.nackademin.stringify.util.DateUtil;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -33,7 +33,7 @@ public class MessageDto implements IConvertEntity<Message> {
     @NotBlank
     @NotEmpty
     @NotNull
-    @Size(min = 3, max = 1000)
+    @Size(min = 1, max = 1000)
     @ApiModelProperty(notes = "The content of the message", example = "Hello there!", required = true)
     private String content;
     @ApiModelProperty(notes = "The avatar to be displayed on client-side. Avatars to be used are avatar1 - avatar20",
@@ -59,7 +59,7 @@ public class MessageDto implements IConvertEntity<Message> {
                 .sender(this.from)
                 .avatar(this.avatar)
                 .content(this.content)
-                .date(DateConverter.stringToDate(this.date))
+                .date(DateUtil.stringToDate(this.date))
                 .build();
     }
 }

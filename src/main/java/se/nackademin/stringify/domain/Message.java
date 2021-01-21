@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import se.nackademin.stringify.dto.MessageDto;
-import se.nackademin.stringify.util.DateConverter;
+import se.nackademin.stringify.util.DateUtil;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -55,7 +55,7 @@ public class Message extends BaseEntity implements IConvertDto<MessageDto> {
                 .guid(this.getGuid())
                 .from(this.sender)
                 .avatar(this.avatar)
-                .date(DateConverter.dateToString(this.date))
+                .date(DateUtil.dateToString(this.date))
                 .content(this.content)
                 .guid(this.getGuid())
                 .build();

@@ -5,6 +5,7 @@ import lombok.experimental.UtilityClass;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 
 /**
@@ -15,7 +16,7 @@ import java.time.format.DateTimeFormatter;
  * Data type of date is a {@code java.sql.Timestamp} for the purpose of simplifying Entities persisting to database.
  */
 @UtilityClass
-public class DateConverter {
+public class DateUtil {
 
     /**
      * String pattern to be converted to Timestamp
@@ -55,6 +56,10 @@ public class DateConverter {
 
         return stringDate.replace("T", " ")
                 .substring(0, stringDate.lastIndexOf(":"));
+    }
+
+    public String now() {
+       return dateToString(new Timestamp(new Date().getTime()));
     }
 
 }
