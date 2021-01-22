@@ -38,7 +38,6 @@ public class LiveCommunicationService implements IService {
         return messageRepository.save(message);
     }
 
-
     public ConnectionNotice storeProfileConnected(UUID chatSessionGuid, @Valid Profile profile)
             throws ChatSessionNotFoundException {
         ChatSession chatSession = getChatSession(chatSessionGuid);
@@ -83,7 +82,7 @@ public class LiveCommunicationService implements IService {
 
         ChatSession updatedChatSession = chatSessionRepository.save(chatSession);
         if (updatedChatSession.getProfilesConnected().size() == 0) {
-            chatSessionRepository.delete(updatedChatSession);
+            chatSessionRepository.deleteById(updatedChatSession.getId());
         }
 
         Message message = Message.builder()

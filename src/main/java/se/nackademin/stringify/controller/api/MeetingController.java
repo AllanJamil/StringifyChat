@@ -74,11 +74,13 @@ public class MeetingController {
         return meetingService.getMeetingByGuid(chatId).convertToDto();
     }
 
-    //Quick test
-    @PostMapping("invite")
-    public void newEmail(@Email @RequestParam("email") String email, @RequestParam("name") String profileName) {
+
+    @PostMapping("invite/{email}/by/{name}")
+    public void newEmail(@Email @PathVariable String email,
+                         @PathVariable("name") String profileName,
+                         @RequestParam("chat-id") UUID chatId) {
         emailService.sendInvitationEmail
-                (email, profileName, "https://stringify-chat.netlify.app/profile");
+                (email, profileName, chatId);
     }
 
     @GetMapping("profiles-connected")

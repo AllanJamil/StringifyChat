@@ -18,8 +18,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ChatSession extends BaseEntity implements IConvertDto<ChatSessionDto> {
 
-    //TODO: ScheduledFuture schedule(Runnable task, Date startTime);
-    // id for internal server use
     @Column(unique = true)
     private String key;
     private String connectUrl;

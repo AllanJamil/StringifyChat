@@ -28,16 +28,16 @@ public class MessageService {
     private final MessageRepository messageRepository;
 
     /**
-     * Fetches a list of maximum 5 message objects from the database with use of Pagination.
+     * Fetches a list of maximum 10 message objects from the database with use of Pagination.
      * The list is sorted by ascending dates.
      *
      * @param chatGuid the {@code UUID} chat guid in relation with the messages
      * @param page     The of page number of a list of messages
-     * @return A list of messages ({@code List<Message>}) with a size of 5
+     * @return A list of messages ({@code List<Message>}) with a size of 10
      */
     @Transactional(readOnly = true)
     public List<Message> getMessage(UUID chatGuid, int page) throws ChatSessionNotFoundException {
-        final int AMOUNT_OF_ELEMENTS = 5;
+        final int AMOUNT_OF_ELEMENTS = 10;
 
         if (!chatSessionRepository.existsByGuid(chatGuid))
             throw new ChatSessionNotFoundException(String.format("No meetings with the id %s was found.", chatGuid));

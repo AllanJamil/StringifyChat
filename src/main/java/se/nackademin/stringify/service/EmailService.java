@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -39,14 +40,14 @@ public class EmailService {
     }
 
     @Async
-    public void sendInvitationEmail(String sendTo, String invitedBy, String connectUrl) {
+    public void sendInvitationEmail(String sendTo, String invitedBy, UUID chatId) {
         Mail mail = new Mail();
         mail.setFrom(new Email("noreply@stringify.com"));
         mail.setTemplateId("d-ee2942f110ba453b9f208384338c0824");
 
         Personalization personalization = new Personalization();
         personalization.addDynamicTemplateData("INVITED_BY", invitedBy);
-        personalization.addDynamicTemplateData("MEETING_URL", connectUrl);
+        personalization.addDynamicTemplateData("MEETING_URL", "https://stringify-chat.netlify.app/connect?chat-id=" + chatId);
         personalization.addTo(new Email(sendTo));
         mail.addPersonalization(personalization);
         sendMail(mail);
