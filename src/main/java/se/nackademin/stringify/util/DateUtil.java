@@ -38,7 +38,7 @@ public class DateUtil {
 
 
         LocalDateTime dateTime = LocalDateTime.parse(dateValue, formatter);
-        return Timestamp.valueOf(dateTime);
+        return Timestamp.valueOf(dateTime.plusNanos(156));
     }
 
     /**

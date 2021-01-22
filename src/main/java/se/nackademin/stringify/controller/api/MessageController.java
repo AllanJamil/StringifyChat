@@ -2,10 +2,7 @@ package se.nackademin.stringify.controller.api;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import se.nackademin.stringify.domain.Message;
 import se.nackademin.stringify.dto.MessageDto;
 import se.nackademin.stringify.service.MessageService;
@@ -17,6 +14,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/messages")
+@CrossOrigin(origins = {"http://localhost:3000", "https://stringify-chat.netlify.app"})
 public class MessageController {
 
     private final MessageService messageService;

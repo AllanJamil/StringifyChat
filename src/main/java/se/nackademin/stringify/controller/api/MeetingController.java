@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import se.nackademin.stringify.controller.response.Meeting;
+import se.nackademin.stringify.domain.Profile;
 import se.nackademin.stringify.dto.ChatSessionDto;
 import se.nackademin.stringify.dto.ProfileDto;
 import se.nackademin.stringify.service.EmailService;
@@ -15,11 +16,14 @@ import se.nackademin.stringify.service.MeetingService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/meetings")
+@CrossOrigin(origins = {"http://localhost:3000", "https://stringify-chat.netlify.app"})
 public class MeetingController {
 
     private final MeetingService meetingService;
@@ -35,7 +39,6 @@ public class MeetingController {
     )
     @ApiResponse(code = 200, message = "A new meeting has been created with given profile")
     @PostMapping("new-meeting")
-    @CrossOrigin
     public Meeting newMeeting(@RequestBody @Valid ProfileDto profile) {
         return meetingService.createNewMeeting(profile.convertToEntity());
     }
@@ -76,5 +79,12 @@ public class MeetingController {
     public void newEmail(@Email @RequestParam("email") String email, @RequestParam("name") String profileName) {
         emailService.sendInvitationEmail
                 (email, profileName, "https://stringify-chat.netlify.app/profile");
+    }
+
+    @GetMapping("profiles-connected")
+    public List<ProfileDto> fetchProfilesConnect(@RequestParam(name = "chat-id") UUID chatId) {
+        return meetingService.getProfilesConnected(chatId).stream()
+                .map(Profile::convertToDto)
+                .collect(Collectors.toList());
     }
 }

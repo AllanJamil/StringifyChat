@@ -33,13 +33,8 @@ public class LiveCommunicationController {
     @SendTo("/queue/meeting/{chatSessionGuid}")
     public MessageDto transmit(@DestinationVariable UUID chatSessionGuid, @Payload @Valid MessageDto messageDto) {
         messageDto.setDate(DateUtil.now());
-        System.out.println(messageDto.getContent());
         Message message = messageDto.convertToEntity();
-        try {
-            return liveCommunicationService.storeMessage(chatSessionGuid, message).convertToDto();
-        } catch (ChatSessionNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        return liveCommunicationService.storeMessage(chatSessionGuid, message).convertToDto();
     }
 
     @MessageMapping("/connect/{chatSessionGuid}")
@@ -47,8 +42,6 @@ public class LiveCommunicationController {
     public ConnectionNotice notifyOnConnect(
             @DestinationVariable UUID chatSessionGuid,
             @Payload @Valid ProfileDto profile) {
-        System.out.println(chatSessionGuid);
-        System.out.println(profile.getName());
         try {
             return liveCommunicationService.storeProfileConnected(
                     chatSessionGuid,

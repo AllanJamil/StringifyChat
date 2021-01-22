@@ -153,7 +153,6 @@ class MeetingControllerTest extends AbstractIntegrationTest {
     @DisplayName("Chat with maximum amount of connected profiles should return NO CONTENT")
     @Test
     void chatWithMaxConnectedWithKeyProvidedShouldReturnNO_CONTENT() throws Exception {
-
         for (int i = 0; i < 5; i++) {
             Profile mockProfile = Profile.builder()
                     .id(UUID.randomUUID())
@@ -164,7 +163,6 @@ class MeetingControllerTest extends AbstractIntegrationTest {
                     .build();
             profileRepository.save(mockProfile);
         }
-
 
         mockMvc.perform(get("/api/meetings/join-meeting")
                 .contentType(MediaType.APPLICATION_JSON)

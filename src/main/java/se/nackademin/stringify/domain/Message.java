@@ -31,7 +31,7 @@ public class Message extends BaseEntity implements IConvertDto<MessageDto> {
 
     @NotBlank
     @NotEmpty
-    @Size(min = 3, max = 1000)
+    @Size(min = 1, max = 1000)
     private String content;
     private String avatar;
     private Timestamp date;

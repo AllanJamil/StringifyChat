@@ -10,8 +10,6 @@ import se.nackademin.stringify.domain.Message;
 import se.nackademin.stringify.util.DateUtil;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.UUID;
 
@@ -24,16 +22,13 @@ public class MessageDto implements IConvertEntity<Message> {
     @ApiModelProperty(notes = "An id used by the client side")
     private UUID guid;
 
-    @NotEmpty
-    @NotBlank
+    @NotBlank(message = "Please provide from whom this message was sent from.")
     @Size(min = 3, max = 30)
     @ApiModelProperty(notes = "The name of the user who sent the message", example = "John Doe")
     private String from;
 
-    @NotBlank
-    @NotEmpty
-    @NotNull
-    @Size(min = 1, max = 1000)
+    @NotBlank(message = "Please provide the content of the message")
+    @Size(min = 1, max = 1000, message = "The content of the message must be at least 1 characters long and maximum 1000.")
     @ApiModelProperty(notes = "The content of the message", example = "Hello there!", required = true)
     private String content;
     @ApiModelProperty(notes = "The avatar to be displayed on client-side. Avatars to be used are avatar1 - avatar20",

@@ -11,8 +11,10 @@ import se.nackademin.stringify.exception.ChatSessionNotFoundException;
 import se.nackademin.stringify.repository.ChatSessionRepository;
 import se.nackademin.stringify.repository.MessageRepository;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 /**
@@ -41,9 +43,11 @@ public class MessageService {
             throw new ChatSessionNotFoundException(String.format("No meetings with the id %s was found.", chatGuid));
 
         Pageable sortedByDate =
-                PageRequest.of(page, AMOUNT_OF_ELEMENTS, Sort.by("date").ascending());
+                PageRequest.of(page, AMOUNT_OF_ELEMENTS, Sort.by("date").descending());
 
-        return messageRepository.findAllByChatSession_Guid(chatGuid, sortedByDate);
+        return messageRepository.findAllByChatSession_Guid(chatGuid, sortedByDate).stream()
+                .sorted(Comparator.comparing(Message::getDate))
+                .collect(Collectors.toList());
     }
 
 }

@@ -15,6 +15,7 @@ import se.nackademin.stringify.repository.ProfileRepository;
 import se.nackademin.stringify.util.Key;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -42,8 +43,7 @@ public class MeetingService implements IService {
         savedChatSession.setKey(Key.generate().toString());
         ChatSession meeting = chatSessionRepository.save(savedChatSession);
 
-        //TODO: fix bug; BaseEntity to generate Guid for Profile class as well
-        profile.setGuid(UUID.randomUUID());
+        System.out.println("GUID CREATE MEETING: " + profile.getGuid());
         profile.setChatSession(meeting);
         Profile connectedProfile = profileRepository.save(profile);
 
@@ -91,6 +91,12 @@ public class MeetingService implements IService {
             throw new ConnectionLimitException("Meeting has reached the maximum number of connections.");
 
         return chatSession;
+    }
+
+    public List<Profile> getProfilesConnected(UUID chatId) {
+        ChatSession chatSession = getChatSession(chatId);
+
+        return profileRepository.findAllByChatSession_Id(chatSession.getId());
     }
 
     @Override

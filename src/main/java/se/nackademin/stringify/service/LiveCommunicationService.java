@@ -2,6 +2,7 @@ package se.nackademin.stringify.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import se.nackademin.stringify.controller.response.ConnectionNotice;
 import se.nackademin.stringify.domain.ChatSession;
 import se.nackademin.stringify.domain.Message;
@@ -14,6 +15,8 @@ import se.nackademin.stringify.repository.MessageRepository;
 import se.nackademin.stringify.repository.ProfileRepository;
 
 import javax.validation.Valid;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,49 +31,74 @@ public class LiveCommunicationService implements IService {
     public Message storeMessage(UUID chatSessionId, @Valid Message message) throws ChatSessionNotFoundException {
         ChatSession chatSession = getChatSession(chatSessionId);
 
+        message.setDate(new Timestamp(new Date().getTime()));
         message.setId(UUID.randomUUID());
         message.setGuid(UUID.randomUUID());
         message.setChatSession(chatSession);
         return messageRepository.save(message);
     }
 
+
     public ConnectionNotice storeProfileConnected(UUID chatSessionGuid, @Valid Profile profile)
             throws ChatSessionNotFoundException {
         ChatSession chatSession = getChatSession(chatSessionGuid);
 
+        System.out.println(profile.getGuid());
         Optional<Profile> optionalProfile = profileRepository.findByGuid(profile.getGuid());
         ProfileDto connectedProfile;
-
         if (optionalProfile.isEmpty()) {
-            profile.setGuid(UUID.randomUUID());
+            //TODO: FIX BASE ENTITY
+            profile.setId(UUID.randomUUID());
             profile.setChatSession(chatSession);
             connectedProfile = profileRepository.save(profile).convertToDto();
         } else
             connectedProfile = optionalProfile.get().convertToDto();
 
+        Message message = Message.builder()
+                .guid(UUID.randomUUID())
+                .id(UUID.randomUUID())
+                .chatSession(chatSession)
+                .date(new Timestamp(new Date().getTime()))
+                .avatar("connect")
+                .sender("Notice")
+                .content(connectedProfile.getName() + " has connected to the meeting.")
+                .build();
 
-        return new ConnectionNotice(connectedProfile,
-                String.format("%s has connected to the meeting.",
-                        connectedProfile.getName()));
+        Message messageToSend = messageRepository.save(message);
+
+
+        return new ConnectionNotice(connectedProfile, messageToSend.convertToDto());
     }
 
+    @Transactional
     public ConnectionNotice removeProfileDisconnected(UUID chatSessionGuid, @Valid Profile profile)
             throws ProfileNotFoundException, ChatSessionNotFoundException {
 
+        Profile profileFound = profileRepository.findAllByGuidAndChatSession_Guid(profile.getGuid(), chatSessionGuid)
+                .orElseThrow(() -> new ProfileNotFoundException("Could not find a profile"));
         ChatSession chatSession = getChatSession(chatSessionGuid);
-        long isDeleted = profileRepository.deleteByGuidAndChatSession_Id(profile.getGuid(), chatSession.getId());
 
-        if (isDeleted == 0)
-            throw new ProfileNotFoundException("Unable to find profile");
+        chatSession.getProfilesConnected().remove(profileFound);
+        profileRepository.deleteById(profileFound.getId());
 
-        ChatSession chatSessionAfterProfileDeletion = getChatSession(chatSessionGuid);
-
-        if (chatSessionAfterProfileDeletion.getProfilesConnected().size() == 0) {
-            chatSessionRepository.delete(chatSessionAfterProfileDeletion);
+        ChatSession updatedChatSession = chatSessionRepository.save(chatSession);
+        if (updatedChatSession.getProfilesConnected().size() == 0) {
+            chatSessionRepository.delete(updatedChatSession);
         }
 
-        return new ConnectionNotice(profile.convertToDto(),
-                String.format("%s has disconnected.", profile.getName()));
+        Message message = Message.builder()
+                .guid(UUID.randomUUID())
+                .id(UUID.randomUUID())
+                .chatSession(chatSession)
+                .date(new Timestamp(new Date().getTime()))
+                .avatar("disconnect")
+                .sender("Notice")
+                .content(profile.getName() + " has disconnected from the meeting.")
+                .build();
+
+        Message messageToSend = messageRepository.save(message);
+
+        return new ConnectionNotice(profile.convertToDto(), messageToSend.convertToDto());
     }
 
     @Override
