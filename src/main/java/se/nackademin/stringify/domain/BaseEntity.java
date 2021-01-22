@@ -23,7 +23,6 @@ public class BaseEntity {
     private UUID guid = UUID.randomUUID();
 
     @CreationTimestamp
-    @Column(nullable = false)
     private Timestamp created;
 
     public BaseEntity(UUID id, UUID guid) {
