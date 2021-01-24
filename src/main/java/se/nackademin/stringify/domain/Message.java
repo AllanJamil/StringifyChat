@@ -1,16 +1,10 @@
 package se.nackademin.stringify.domain;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import se.nackademin.stringify.dto.MessageDto;
 import se.nackademin.stringify.util.DateUtil;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -18,11 +12,18 @@ import java.sql.Timestamp;
 import java.util.UUID;
 
 @Getter
+@Builder
 @Setter
 @Entity
 @Table(name = "messages")
 @NoArgsConstructor
-public class Message extends BaseEntity implements IConvertDto<MessageDto> {
+@AllArgsConstructor
+public class Message implements IConvertDto<MessageDto> {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
+    private UUID guid = UUID.randomUUID();
 
     @NotEmpty
     @NotBlank
@@ -37,17 +38,6 @@ public class Message extends BaseEntity implements IConvertDto<MessageDto> {
     private Timestamp date;
     @ManyToOne(cascade = CascadeType.PERSIST)
     private ChatSession chatSession;
-
-    @Builder
-    public Message(UUID id, UUID guid, String sender, String content, String avatar, Timestamp date, ChatSession chatSession) {
-        super(id, guid);
-        this.sender = sender;
-        this.content = content;
-        this.avatar = avatar;
-        this.date = date;
-        this.chatSession = chatSession;
-    }
-
 
     @Override
     public MessageDto convertToDto() {

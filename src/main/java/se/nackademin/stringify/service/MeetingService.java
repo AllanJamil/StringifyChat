@@ -10,7 +10,6 @@ import se.nackademin.stringify.exception.ChatSessionNotFoundException;
 import se.nackademin.stringify.exception.ConnectionLimitException;
 import se.nackademin.stringify.exception.InvalidKeyException;
 import se.nackademin.stringify.repository.ChatSessionRepository;
-import se.nackademin.stringify.repository.MessageRepository;
 import se.nackademin.stringify.repository.ProfileRepository;
 import se.nackademin.stringify.util.Key;
 
@@ -26,7 +25,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MeetingService implements IService {
 
-    private final MessageRepository messageRepository;
     private final ChatSessionRepository chatSessionRepository;
     private final ProfileRepository profileRepository;
 
@@ -43,7 +41,6 @@ public class MeetingService implements IService {
         savedChatSession.setKey(Key.generate().toString());
         ChatSession meeting = chatSessionRepository.save(savedChatSession);
 
-        System.out.println("GUID CREATE MEETING: " + profile.getGuid());
         profile.setChatSession(meeting);
         Profile connectedProfile = profileRepository.save(profile);
 

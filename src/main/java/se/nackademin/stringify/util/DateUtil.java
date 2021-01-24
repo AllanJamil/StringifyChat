@@ -3,8 +3,6 @@ package se.nackademin.stringify.util;
 import lombok.experimental.UtilityClass;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 
@@ -19,29 +17,6 @@ import java.util.Date;
 public class DateUtil {
 
     /**
-     * String pattern to be converted to Timestamp
-     */
-    private final String PATTERN = "yyyy-MM-dd HH:mm";
-    private final String DATE_REGEX = "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (2[0-3]|[01][0-9]):[0-5][0-9]$";
-
-    /**
-     * Converts the string representation of a date to a {@code java.sql.Timestamp}
-     *
-     * @param dateValue string representation of date to be converted
-     * @return Timestamp of the string value
-     * @throws IllegalArgumentException
-     */
-    public Timestamp stringToDate(String dateValue) throws IllegalArgumentException {
-        if (dateValue == null || !dateValue.matches(DATE_REGEX))
-            throw new IllegalArgumentException("Invalid format. Date pattern is: " + PATTERN);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(PATTERN);
-
-
-        LocalDateTime dateTime = LocalDateTime.parse(dateValue, formatter);
-        return Timestamp.valueOf(dateTime.plusNanos(156));
-    }
-
-    /**
      * Converts a {@code java.sql.Timestamp} object to a string date with the pattern of <li>yyyy-MM-dd HH:mm</li>
      *
      * @param date Timestamp to be converted to a String representation of a date
@@ -52,14 +27,16 @@ public class DateUtil {
         if (date == null)
             throw new IllegalArgumentException("Cannot convert null to String");
 
-        String stringDate = date.toLocalDateTime().toString();
+        String stringDate = date.toString();
 
-        return stringDate.replace("T", " ")
-                .substring(0, stringDate.lastIndexOf(":"));
+        return stringDate.substring(0, stringDate.lastIndexOf(":"));
     }
 
-    public String now() {
+    public static String stringValueOfNow() {
        return dateToString(new Timestamp(new Date().getTime()));
     }
 
+    public static Timestamp now() {
+        return new Timestamp(new Date().getTime());
+    }
 }

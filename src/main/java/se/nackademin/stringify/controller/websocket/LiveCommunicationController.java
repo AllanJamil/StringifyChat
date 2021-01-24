@@ -9,13 +9,11 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.server.ResponseStatusException;
 import se.nackademin.stringify.controller.response.ConnectionNotice;
-import se.nackademin.stringify.domain.Message;
 import se.nackademin.stringify.dto.MessageDto;
 import se.nackademin.stringify.dto.ProfileDto;
 import se.nackademin.stringify.exception.ChatSessionNotFoundException;
 import se.nackademin.stringify.exception.ProfileNotFoundException;
 import se.nackademin.stringify.service.LiveCommunicationService;
-import se.nackademin.stringify.util.DateUtil;
 
 import javax.validation.Valid;
 import java.util.UUID;
@@ -32,9 +30,9 @@ public class LiveCommunicationController {
     @MessageMapping("/send/meeting/{chatSessionGuid}")
     @SendTo("/queue/meeting/{chatSessionGuid}")
     public MessageDto transmit(@DestinationVariable UUID chatSessionGuid, @Payload @Valid MessageDto messageDto) {
-        messageDto.setDate(DateUtil.now());
-        Message message = messageDto.convertToEntity();
-        return liveCommunicationService.storeMessage(chatSessionGuid, message).convertToDto();
+
+        return liveCommunicationService.storeMessage(chatSessionGuid, messageDto.convertToEntity())
+                .convertToDto();
     }
 
     @MessageMapping("/connect/{chatSessionGuid}")

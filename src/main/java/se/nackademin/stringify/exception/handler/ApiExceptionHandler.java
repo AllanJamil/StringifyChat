@@ -17,7 +17,6 @@ import se.nackademin.stringify.exception.ProfileNotFoundException;
 import se.nackademin.stringify.exception.response.ErrorResponse;
 import se.nackademin.stringify.util.DateUtil;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -71,7 +70,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(ErrorResponse.builder()
                 .exceptionType(ex.getClass().getSimpleName())
                 .message(ex.getMessage())
-                .timestamp(DateUtil.dateToString(new Timestamp(new Date().getTime())))
+                .timestamp(DateUtil.stringValueOfNow())
                 .status(status)
                 .build(), status);
     }

@@ -1,15 +1,9 @@
 package se.nackademin.stringify.domain;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import se.nackademin.stringify.dto.ProfileDto;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -19,9 +13,15 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "profiles")
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
-public class Profile extends BaseEntity implements IConvertDto<ProfileDto> {
+public class Profile implements IConvertDto<ProfileDto> {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
+    private UUID guid = UUID.randomUUID();
     @NotEmpty
     @NotBlank
     @Size(min = 3, max = 30)
@@ -29,15 +29,6 @@ public class Profile extends BaseEntity implements IConvertDto<ProfileDto> {
     private String avatar;
     @ManyToOne(cascade = CascadeType.PERSIST)
     private ChatSession chatSession;
-
-    @Builder
-    public Profile(UUID id, UUID guid, String name, String avatar, ChatSession chatSession) {
-        super(id, guid);
-        this.name = name;
-        this.avatar = avatar;
-        this.chatSession = chatSession;
-    }
-
 
     @Override
     public ProfileDto convertToDto() {

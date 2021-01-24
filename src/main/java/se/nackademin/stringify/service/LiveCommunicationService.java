@@ -13,10 +13,9 @@ import se.nackademin.stringify.exception.ProfileNotFoundException;
 import se.nackademin.stringify.repository.ChatSessionRepository;
 import se.nackademin.stringify.repository.MessageRepository;
 import se.nackademin.stringify.repository.ProfileRepository;
+import se.nackademin.stringify.util.DateUtil;
 
 import javax.validation.Valid;
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,7 +30,7 @@ public class LiveCommunicationService implements IService {
     public Message storeMessage(UUID chatSessionId, @Valid Message message) throws ChatSessionNotFoundException {
         ChatSession chatSession = getChatSession(chatSessionId);
 
-        message.setDate(new Timestamp(new Date().getTime()));
+        message.setDate(DateUtil.now());
         message.setId(UUID.randomUUID());
         message.setGuid(UUID.randomUUID());
         message.setChatSession(chatSession);
@@ -42,11 +41,9 @@ public class LiveCommunicationService implements IService {
             throws ChatSessionNotFoundException {
         ChatSession chatSession = getChatSession(chatSessionGuid);
 
-        System.out.println(profile.getGuid());
         Optional<Profile> optionalProfile = profileRepository.findByGuid(profile.getGuid());
         ProfileDto connectedProfile;
         if (optionalProfile.isEmpty()) {
-            //TODO: FIX BASE ENTITY
             profile.setId(UUID.randomUUID());
             profile.setChatSession(chatSession);
             connectedProfile = profileRepository.save(profile).convertToDto();
@@ -57,7 +54,7 @@ public class LiveCommunicationService implements IService {
                 .guid(UUID.randomUUID())
                 .id(UUID.randomUUID())
                 .chatSession(chatSession)
-                .date(new Timestamp(new Date().getTime()))
+                .date(DateUtil.now())
                 .avatar("connect")
                 .sender("Notice")
                 .content(connectedProfile.getName() + " has connected to the meeting.")
@@ -80,24 +77,28 @@ public class LiveCommunicationService implements IService {
         chatSession.getProfilesConnected().remove(profileFound);
         profileRepository.deleteById(profileFound.getId());
 
-        ChatSession updatedChatSession = chatSessionRepository.save(chatSession);
-        if (updatedChatSession.getProfilesConnected().size() == 0) {
-            chatSessionRepository.deleteById(updatedChatSession.getId());
+        boolean deleted = false;
+        if (chatSession.getProfilesConnected().size() == 0) {
+            deleted = true;
+            chatSessionRepository.deleteById(chatSession.getId());
         }
 
-        Message message = Message.builder()
-                .guid(UUID.randomUUID())
-                .id(UUID.randomUUID())
-                .chatSession(chatSession)
-                .date(new Timestamp(new Date().getTime()))
-                .avatar("disconnect")
-                .sender("Notice")
-                .content(profile.getName() + " has disconnected from the meeting.")
-                .build();
+        Message message;
+        if (!deleted) {
+            message = Message.builder()
+                    .guid(UUID.randomUUID())
+                    .id(UUID.randomUUID())
+                    .chatSession(chatSession)
+                    .date(DateUtil.now())
+                    .avatar("disconnect")
+                    .sender("Notice")
+                    .content(profile.getName() + " has disconnected from the meeting.")
+                    .build();
+            message = messageRepository.save(message);
+            return new ConnectionNotice(profile.convertToDto(), message.convertToDto());
+        }
 
-        Message messageToSend = messageRepository.save(message);
-
-        return new ConnectionNotice(profile.convertToDto(), messageToSend.convertToDto());
+        return null;
     }
 
     @Override

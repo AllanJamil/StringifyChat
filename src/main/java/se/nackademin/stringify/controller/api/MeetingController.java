@@ -44,7 +44,7 @@ public class MeetingController {
     }
 
     @ApiOperation(
-            value = "Finds a chat session by Key or Chat Id",
+            value = "Finds a chat session by Key or Chat id",
             produces = "application/json",
             consumes = "application/json",
             notes = "Provide either a key or a chat id in order to get information about the chat session",
@@ -74,7 +74,13 @@ public class MeetingController {
         return meetingService.getMeetingByGuid(chatId).convertToDto();
     }
 
-
+    @ApiOperation(
+            value = "Sends a invitation link by email.",
+            consumes = "application/json",
+            notes = "Calls Sendgrid API to send an email to the given email" +
+                    " address with an invitation link to a active chat session.",
+            response = void.class
+    )
     @PostMapping("invite/{email}/by/{name}")
     public void newEmail(@Email @PathVariable String email,
                          @PathVariable("name") String profileName,
@@ -83,6 +89,18 @@ public class MeetingController {
                 (email, profileName, chatId);
     }
 
+    @ApiOperation(
+            value = "Fetches all connected profiles by chat id.",
+            consumes = "application/json",
+            produces = "application/json",
+            notes = "Fetches all connected profiles to a active chat session by the given chat id",
+            response = ProfileDto[].class
+    )
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK: A chat session with the given key or chat id has been found.",
+                    response = ProfileDto[].class),
+            @ApiResponse(code = 404, message = "Not found: A chat session with the given key or chat id could not be found."),
+    })
     @GetMapping("profiles-connected")
     public List<ProfileDto> fetchProfilesConnect(@RequestParam(name = "chat-id") UUID chatId) {
         return meetingService.getProfilesConnected(chatId).stream()

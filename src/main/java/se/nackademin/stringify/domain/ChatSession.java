@@ -1,12 +1,13 @@
 package se.nackademin.stringify.domain;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import se.nackademin.stringify.dto.ChatSessionDto;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,27 +16,26 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
-public class ChatSession extends BaseEntity implements IConvertDto<ChatSessionDto> {
+public class ChatSession implements IConvertDto<ChatSessionDto> {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
+    private UUID guid = UUID.randomUUID();
+    @CreationTimestamp
+    private Timestamp created;
     @Column(unique = true)
     private String key;
     private String connectUrl;
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToMany(mappedBy = "chatSession", cascade = CascadeType.ALL)
     List<Message> messages;
-    @OneToMany (mappedBy = "chatSession", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany (mappedBy = "chatSession", cascade = {CascadeType.ALL, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     List<Profile> profilesConnected;
-
-    @Builder
-    public ChatSession(
-            UUID id,
-            UUID guid,
-            String key,
-            String connectUrl) {
-        super(id, guid);
-        this.key = key;
-        this.connectUrl = connectUrl;
-    }
 
     @Override
     public ChatSessionDto convertToDto() {

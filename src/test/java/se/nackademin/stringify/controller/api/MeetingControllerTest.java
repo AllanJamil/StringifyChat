@@ -101,7 +101,7 @@ class MeetingControllerTest extends AbstractIntegrationTest {
     @DisplayName("Valid key should return a chat session")
     @Test
     void validKeyWithExistingChatSessionShouldReturnChatSession() throws Exception {
-        mockMvc.perform(get("/api/meetings/join-meeting")
+        mockMvc.perform(get("/api/meetings/find-meeting")
                 .contentType(MediaType.APPLICATION_JSON)
                 .param("key", mockChatSession.getKey()))
                 .andExpect(status().isOk())
@@ -112,7 +112,7 @@ class MeetingControllerTest extends AbstractIntegrationTest {
     @DisplayName("chat id with existing chat session should return a chat session")
     @Test
     void chatIdWithExistingChatSessionShouldReturnChatSession() throws Exception {
-        mockMvc.perform(get("/api/meetings/join-meeting")
+        mockMvc.perform(get("/api/meetings/find-meeting")
                 .contentType(MediaType.APPLICATION_JSON)
                 .param("chat-id", mockChatSession.getGuid().toString()))
                 .andExpect(status().isOk())
@@ -123,7 +123,7 @@ class MeetingControllerTest extends AbstractIntegrationTest {
     @DisplayName("Invalid key with grater than 6 characters should return BAD REQUEST")
     @Test
     void invalidKeyWithTooManyCharactersShouldReturnBAD_REQUEST() throws Exception {
-        mockMvc.perform(get("/api/meetings/join-meeting")
+        mockMvc.perform(get("/api/meetings/find-meeting")
                 .contentType(MediaType.APPLICATION_JSON)
                 .param("key", "SADAF49PJ"))
                 .andExpect(status().isBadRequest())
@@ -133,7 +133,7 @@ class MeetingControllerTest extends AbstractIntegrationTest {
     @DisplayName("Key with non-existing chat session will return NOT FOUND")
     @Test
     void keyWithNonExistingChatSessionShouldReturnNOT_FOUND() throws Exception {
-        mockMvc.perform(get("/api/meetings/join-meeting")
+        mockMvc.perform(get("/api/meetings/find-meeting")
                 .contentType(MediaType.APPLICATION_JSON)
                 .param("key", Key.generate().toString()))
                 .andExpect(status().isNotFound())
@@ -143,7 +143,7 @@ class MeetingControllerTest extends AbstractIntegrationTest {
     @DisplayName("chatId with non-existing chat session will return NOT FOUND")
     @Test
     void chatIdWithNonExistingChatSessionShouldReturnNOT_FOUND() throws Exception {
-        mockMvc.perform(get("/api/meetings/join-meeting")
+        mockMvc.perform(get("/api/meetings/find-meeting")
                 .contentType(MediaType.APPLICATION_JSON)
                 .param("chat-id", UUID.randomUUID().toString()))
                 .andExpect(status().isNotFound())
@@ -164,17 +164,17 @@ class MeetingControllerTest extends AbstractIntegrationTest {
             profileRepository.save(mockProfile);
         }
 
-        mockMvc.perform(get("/api/meetings/join-meeting")
+        mockMvc.perform(get("/api/meetings/find-meeting")
                 .contentType(MediaType.APPLICATION_JSON)
                 .param("key", mockChatSession.getKey()))
-                .andExpect(status().isNoContent())
+                .andExpect(status().isServiceUnavailable())
                 .andDo(print());
     }
 
     @DisplayName("No given parameters should return Bad Request")
     @Test
     void noParametersGivenShouldReturnBAD_REQUEST() throws Exception {
-        mockMvc.perform(get("/api/meetings/join-meeting")
+        mockMvc.perform(get("/api/meetings/find-meeting")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andDo(print())

@@ -6,12 +6,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.server.ResponseStatusException;
 import se.nackademin.stringify.domain.Message;
 import se.nackademin.stringify.dto.MessageDto;
 import se.nackademin.stringify.dto.ProfileDto;
 import se.nackademin.stringify.exception.ChatSessionNotFoundException;
 import se.nackademin.stringify.service.LiveCommunicationService;
+import se.nackademin.stringify.util.DateUtil;
 
 import java.util.UUID;
 
@@ -53,13 +53,12 @@ class LiveCommunicationControllerTest {
 
     @Test
     void testTransmitWithValidMessageShouldReturnMessageDto() throws ChatSessionNotFoundException {
-
-
-        given(liveCommunicationService.storeMessage(any(UUID.class), any(Message.class))).willReturn(mockMessageDto.convertToEntity());
+        Message message = mockMessageDto.convertToEntity();
+        message.setDate(DateUtil.now());
+        given(liveCommunicationService.storeMessage(any(UUID.class), any(Message.class))).willReturn(message);
 
         assertThat(liveCommunicationController.transmit(UUID.randomUUID(), mockMessageDto))
                 .isInstanceOf(MessageDto.class);
-
 
         then(liveCommunicationService).should(times(1)).storeMessage(any(UUID.class), any(Message.class));
     }
@@ -68,9 +67,9 @@ class LiveCommunicationControllerTest {
     void testTransmitMessageWithNoDateShouldThrowIllegalArgumentException() throws ChatSessionNotFoundException {
         mockMessageDto.setDate(null);
 
-        assertThatThrownBy(() -> liveCommunicationController.transmit(UUID.randomUUID(), mockMessageDto)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> liveCommunicationController.transmit(UUID.randomUUID(), mockMessageDto)).isInstanceOf(NullPointerException.class);
 
-        then(liveCommunicationService).should(times(0)).storeMessage(any(UUID.class), any(Message.class));
+        then(liveCommunicationService).should(times(1)).storeMessage(any(UUID.class), any(Message.class));
     }
 
     @Test
@@ -87,7 +86,7 @@ class LiveCommunicationControllerTest {
         given(liveCommunicationService.storeMessage(any(UUID.class), any(Message.class))).willThrow(ChatSessionNotFoundException.class);
 
         assertThatThrownBy(() -> liveCommunicationController.transmit(UUID.randomUUID(), mockMessageDto))
-                .isInstanceOf(ResponseStatusException.class);
+                .isInstanceOf(ChatSessionNotFoundException.class);
 
         then(liveCommunicationService).should(times(1)).storeMessage(any(UUID.class), any(Message.class));
     }

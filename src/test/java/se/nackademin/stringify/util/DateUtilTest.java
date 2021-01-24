@@ -2,8 +2,6 @@ package se.nackademin.stringify.util;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -12,29 +10,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class DateUtilTest {
-
-    @DisplayName("A value with yyyy-MM-dd HH:mm should return Timestamp with same value")
-    @Test
-    void correctFormatWillReturnTimeStampWithSameValue() {
-        String value = "2020-12-30 14:01";
-        Timestamp timestamp = DateUtil.stringToDate(value);
-
-        assertThat(timestamp.toLocalDateTime().toString()).isEqualTo(value.replace(" ", "T"));
-    }
-
-    @DisplayName("A value with incorrect format should throw IllegalArgumentException")
-    @ParameterizedTest
-    @ValueSource(strings = {"2020-12-30", "2020-18-60 15:62", "2020-12-30     14:01", "2020-12-30T14:01"})
-    void IncorrectFormatWillThrowIllegalArgumentException(String incorrectFormat) {
-        assertThatThrownBy(() -> DateUtil.stringToDate(incorrectFormat)).isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @DisplayName("Null value should throw IllegalArgumentException")
-    @Test
-    void nullValueShouldThrowIllegalArgumentException() {
-
-        assertThatThrownBy(() -> DateUtil.stringToDate(null)).isInstanceOf(IllegalArgumentException.class);
-    }
 
     @DisplayName("the given Timestamp object should be converted to an instance of a String")
     @Test
@@ -52,7 +27,7 @@ class DateUtilTest {
     @DisplayName("Timestamp converted to String should have format yyyy-MM-dd HH:mm")
     @Test
     void stringDateShouldHaveSameValueAsTimestamp() {
-        Timestamp timestamp = Timestamp.valueOf("2020-09-15 15:16:00.0");
+        Timestamp timestamp = Timestamp.valueOf("2020-09-15 15:16:00.016");
 
         String actual = DateUtil.dateToString(timestamp);
 

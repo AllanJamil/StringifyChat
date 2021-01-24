@@ -10,6 +10,7 @@ import se.nackademin.stringify.domain.Message;
 import se.nackademin.stringify.exception.ChatSessionNotFoundException;
 import se.nackademin.stringify.repository.ChatSessionRepository;
 import se.nackademin.stringify.repository.MessageRepository;
+import se.nackademin.stringify.util.DateUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,10 +34,9 @@ class MessageServiceTest {
 
     @InjectMocks
     MessageService messageService;
-
     @DisplayName("Non existent chatSession should throw ChatSessionNotFoundException")
     @Test
-    void TestGetMessageThrowsException() {
+    void testGetMessageThrowsException() {
         given(chatSessionRepository.existsByGuid(any(UUID.class))).willReturn(false);
 
         assertThatThrownBy(() -> messageService.getMessage(UUID.randomUUID(), 0))
@@ -45,10 +45,12 @@ class MessageServiceTest {
 
     @DisplayName("Existing chat session should return list of messages")
     @Test
-    void TestGetMessageShouldReturnListOfMessages() throws ChatSessionNotFoundException {
+    void testGetMessageShouldReturnListOfMessages() throws ChatSessionNotFoundException {
         List<Message> mockMessages = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            mockMessages.add(new Message());
+        for (int i = 0; i < 10; i++) {
+            Message message = new Message();
+            message.setDate(DateUtil.now());
+            mockMessages.add(message);
         }
 
         given(chatSessionRepository.existsByGuid(any(UUID.class))).willReturn(true);

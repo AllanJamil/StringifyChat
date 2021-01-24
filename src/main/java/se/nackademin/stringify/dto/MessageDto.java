@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import se.nackademin.stringify.domain.Message;
-import se.nackademin.stringify.util.DateUtil;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -54,7 +53,6 @@ public class MessageDto implements IConvertEntity<Message> {
                 .sender(this.from)
                 .avatar(this.avatar)
                 .content(this.content)
-                .date(DateUtil.stringToDate(this.date))
                 .build();
     }
 }

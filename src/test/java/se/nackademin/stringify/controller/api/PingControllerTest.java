@@ -27,6 +27,6 @@ class PingControllerTest extends AbstractIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(content().string(containsString("pong")));
+                .andExpect(content().string(containsString("Server started")));
     }
 }
