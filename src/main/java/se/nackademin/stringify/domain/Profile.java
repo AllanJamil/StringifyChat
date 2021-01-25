@@ -21,7 +21,7 @@ public class Profile implements IConvertDto<ProfileDto> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private UUID guid = UUID.randomUUID();
+    private UUID guid = UUID.randomUUID();;
     @NotEmpty
     @NotBlank
     @Size(min = 3, max = 30)

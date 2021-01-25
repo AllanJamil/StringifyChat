@@ -2,10 +2,7 @@ package se.nackademin.stringify.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import se.nackademin.stringify.domain.ChatSession;
 
 import java.util.UUID;
@@ -13,6 +10,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @ApiModel(description = "A chat session provided by the server")
 public class ChatSessionDto implements IConvertEntity<ChatSession> {
 
@@ -26,18 +25,6 @@ public class ChatSessionDto implements IConvertEntity<ChatSession> {
     private String connectUrl;
     @ApiModelProperty(notes = "CipherKey is used by the client side to encrypt and decrypt messages")
     private String cipherKey;
-
-    @Builder
-    public ChatSessionDto(
-            UUID guid,
-            String key,
-            String connectUrl,
-            String cipherKey) {
-        this.guid = guid;
-        this.key = key;
-        this.connectUrl = connectUrl;
-        this.cipherKey = cipherKey;
-    }
 
     @Override
     public ChatSession convertToEntity() {

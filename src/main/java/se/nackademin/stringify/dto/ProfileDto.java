@@ -2,10 +2,7 @@ package se.nackademin.stringify.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import se.nackademin.stringify.domain.Profile;
 
 import javax.validation.constraints.NotBlank;
@@ -16,6 +13,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @ApiModel(description = "A object used for a client to be identified with during a chat session")
 public class ProfileDto implements IConvertEntity<Profile> {
 
@@ -29,13 +28,6 @@ public class ProfileDto implements IConvertEntity<Profile> {
     private String name;
     @ApiModelProperty(notes = "A avatar used by the client-side", example = "avatar20")
     private String avatar;
-
-    @Builder
-    public ProfileDto(UUID guid, String name, String avatar) {
-        this.guid = guid;
-        this.name = name;
-        this.avatar = avatar;
-    }
 
     @Override
     public Profile convertToEntity() {

@@ -12,18 +12,18 @@ import java.sql.Timestamp;
 import java.util.UUID;
 
 @Getter
-@Builder
 @Setter
-@Entity
-@Table(name = "messages")
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "messages")
 public class Message implements IConvertDto<MessageDto> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private UUID guid = UUID.randomUUID();
+    private UUID guid = UUID.randomUUID();;
 
     @NotEmpty
     @NotBlank

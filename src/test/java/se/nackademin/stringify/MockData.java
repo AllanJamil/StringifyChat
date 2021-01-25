@@ -1,6 +1,9 @@
+package se.nackademin.stringify;
+
 import se.nackademin.stringify.domain.ChatSession;
+import se.nackademin.stringify.domain.Message;
 import se.nackademin.stringify.domain.Profile;
-import se.nackademin.stringify.dto.ProfileDto;
+import se.nackademin.stringify.util.DateUtil;
 import se.nackademin.stringify.util.Key;
 
 import java.util.UUID;
@@ -10,7 +13,12 @@ import java.util.UUID;
  */
 public class MockData {
 
+    /**
+     * Method provides a mocked ChatSession instance without relation to messages or profiles
+     * @return Mocked {@code ChatSession.class}
+     */
     public static ChatSession getMockChatSessionEntity() {
+
         UUID chatId = UUID.randomUUID();
         return  ChatSession.builder()
                 .guid(chatId)
@@ -20,8 +28,8 @@ public class MockData {
     }
 
     /**
-     * Method provides a mocked profile without relation to Chatsession
-     * @return {@code Profile.class} Mocked Profile
+     * Method provides a mocked Profile instance without relation to ChatSession
+     * @return Mocked {@code Profile.class}
      */
     public static Profile getMockProfileEntity() {
         return Profile.builder()
@@ -32,7 +40,17 @@ public class MockData {
                 .build();
     }
 
-    public static ProfileDto getMockProfileDto() {
-
+    /**
+     * Method provides a mocked Message instance without relation to ChatSession
+     * @return Mocked {@code Message.class}
+     */
+    public static Message getMockMessageEntity() {
+        return Message.builder()
+                .id(UUID.randomUUID())
+                .sender("John Doe")
+                .avatar("avatar1")
+                .date(DateUtil.now())
+                .content("Placeholder")
+                .build();
     }
 }

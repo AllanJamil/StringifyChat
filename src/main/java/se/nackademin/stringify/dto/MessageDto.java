@@ -2,10 +2,7 @@ package se.nackademin.stringify.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import se.nackademin.stringify.domain.Message;
 
 import javax.validation.constraints.NotBlank;
@@ -14,6 +11,8 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @ApiModel(description = "A message object to be published to users connected to a chat session")
 public class MessageDto implements IConvertEntity<Message> {
@@ -35,16 +34,6 @@ public class MessageDto implements IConvertEntity<Message> {
     private String avatar;
     @ApiModelProperty(notes = "The timestamp of the time of sending the message", example = "2021-01-01 14:32")
     private String date;
-
-    @Builder
-    public MessageDto(UUID guid, String from, String content, String avatar, String date) {
-        this.guid = guid;
-        this.from = from;
-        this.content = content;
-        this.avatar = avatar;
-        this.date = date;
-    }
-
 
     @Override
     public Message convertToEntity() {
