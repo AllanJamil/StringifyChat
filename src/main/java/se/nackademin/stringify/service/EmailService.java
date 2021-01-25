@@ -21,8 +21,8 @@ import java.util.UUID;
 public class EmailService {
 
     private SendGrid sg = new SendGrid(System.getenv("SG_API_KEY"));
-
-    private void sendMail(Mail mail) {
+    @Async(value = "taskExecutor2")
+    void sendMail(Mail mail) {
 
         Request request = new Request();
         try {
@@ -38,7 +38,7 @@ public class EmailService {
         }
     }
 
-    @Async(value = "taskExecutor")
+    @Async(value = "taskExecutor1")
     public void sendInvitationEmail(String sendTo, String invitedBy, UUID chatId) {
         Mail mail = new Mail();
         mail.setFrom(new Email("noreply@stringify.com"));
