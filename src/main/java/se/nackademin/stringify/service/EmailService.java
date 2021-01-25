@@ -8,6 +8,7 @@ import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Email;
 import com.sendgrid.helpers.mail.objects.Personalization;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.util.UUID;
 public class EmailService {
 
     private SendGrid sg = new SendGrid(System.getenv("SG_API_KEY"));
+    @Async(value = "taskExecutor2")
     void sendMail(Mail mail) {
 
         Request request = new Request();
@@ -36,6 +38,7 @@ public class EmailService {
         }
     }
 
+    @Async(value = "taskExecutor1")
     public void sendInvitationEmail(String sendTo, String invitedBy, UUID chatId) {
         Mail mail = new Mail();
         mail.setFrom(new Email("noreply@stringify.com"));
