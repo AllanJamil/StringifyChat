@@ -21,7 +21,8 @@ import java.util.UUID;
 public class EmailService {
 
     private SendGrid sg = new SendGrid(System.getenv("SG_API_KEY"));
-    void sendMail(Mail mail) {
+
+    private void sendMail(Mail mail) {
 
         Request request = new Request();
         try {
