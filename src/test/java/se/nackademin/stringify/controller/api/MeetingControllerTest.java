@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import se.nackademin.stringify.AbstractIntegrationTest;
+import se.nackademin.stringify.MockData;
 import se.nackademin.stringify.controller.response.Meeting;
 import se.nackademin.stringify.domain.ChatSession;
 import se.nackademin.stringify.domain.Profile;
@@ -28,8 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -181,5 +181,23 @@ class MeetingControllerTest extends AbstractIntegrationTest {
                 .andExpect(result -> assertThat(Objects.equals(result
                         .getResponse()
                         .getErrorMessage(), "No key value or chat id was provided.")));
+    }
+
+
+    @Test
+    void chatSessionContainingOneProfileShouldReturnACollectionOfSize1() throws Exception {
+        Profile mockProfile = MockData.getMockProfileEntity();
+        mockProfile.setChatSession(mockChatSession);
+        profileRepository.save(mockProfile);
+        MvcResult mvcResult = mockMvc.perform(get("/api/meetings/profiles-connected")
+                .param("chat-id", mockChatSession.getGuid().toString()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andReturn();
+
+        Profile[] profiles = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Profile[].class);
+
+        assertThat(profiles.length).isEqualTo(1);
     }
 }
