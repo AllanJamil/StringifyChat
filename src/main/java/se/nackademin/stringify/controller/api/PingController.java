@@ -5,6 +5,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/***
+ * Rest controller for pinging the server when it is idle.
+ */
 @RestController
 @CrossOrigin(origins = {"http://localhost:3000", "https://stringify-chat.netlify.app"})
 public class PingController {

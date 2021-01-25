@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/***
+ * Rest controller for everything to do with messages.
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/messages")

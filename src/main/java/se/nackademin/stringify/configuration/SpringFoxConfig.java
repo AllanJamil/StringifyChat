@@ -7,9 +7,16 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+/***
+ * Configuration class for SwaggerUI.
+ */
 @Configuration
 public class SpringFoxConfig {
 
+    /***
+     * API configuration.
+     * @return Docket which acts as the primary interface.
+     */
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)

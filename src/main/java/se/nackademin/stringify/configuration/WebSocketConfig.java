@@ -6,16 +6,30 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
+/***
+ * Configuration class for websockets.
+ */
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+    /***
+     * Enable a simple message broker.
+     * Configure prefixes to filter destinations targeting the broker.
+     * @param config
+     */
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/queue");
         config.setApplicationDestinationPrefixes("/app");
     }
 
+    /***
+     * We add stringify-chat as endpoint.
+     * Allow both localhost and our netlify url as origins.
+     * Enable SockJS.
+     * @param registry
+     */
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/stringify-chat")

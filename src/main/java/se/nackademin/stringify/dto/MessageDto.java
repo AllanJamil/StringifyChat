@@ -35,6 +35,10 @@ public class MessageDto implements IConvertEntity<Message> {
     @ApiModelProperty(notes = "The timestamp of the time of sending the message", example = "2021-01-01 14:32")
     private String date;
 
+    /***
+     * Data transfer object to an entity.
+     * @return Message data transfer object
+     */
     @Override
     public Message convertToEntity() {
         return Message.builder()

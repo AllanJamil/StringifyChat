@@ -16,6 +16,9 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+/***
+ * Model for a single profile containing id, guid, name, avatar and a chat session.
+ */
 public class Profile implements IConvertDto<ProfileDto> {
 
     @Id
@@ -30,6 +33,10 @@ public class Profile implements IConvertDto<ProfileDto> {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private ChatSession chatSession;
 
+    /***
+     * Entity to data transfer object.
+     * @return Message data transfer object
+     */
     @Override
     public ProfileDto convertToDto() {
         return ProfileDto.builder()

@@ -12,18 +12,21 @@ import java.sql.Timestamp;
 import java.util.UUID;
 
 @Getter
-@Setter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Setter
 @Entity
 @Table(name = "messages")
+@NoArgsConstructor
+@AllArgsConstructor
+/***
+ * Model for a single message containing id, guid, sender, content, avatar, date and a chat session.
+ */
 public class Message implements IConvertDto<MessageDto> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private UUID guid = UUID.randomUUID();;
+    private UUID guid = UUID.randomUUID();
 
     @NotEmpty
     @NotBlank
@@ -39,6 +42,10 @@ public class Message implements IConvertDto<MessageDto> {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private ChatSession chatSession;
 
+    /***
+     * Entity to data transfer object.
+     * @return Message data transfer object
+     */
     @Override
     public MessageDto convertToDto() {
         return MessageDto.builder()

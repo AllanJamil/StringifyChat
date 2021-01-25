@@ -26,6 +26,10 @@ public class ChatSessionDto implements IConvertEntity<ChatSession> {
     @ApiModelProperty(notes = "CipherKey is used by the client side to encrypt and decrypt messages")
     private String cipherKey;
 
+    /***
+     * Data transfer object to an entity.
+     * @return Message data transfer object
+     */
     @Override
     public ChatSession convertToEntity() {
         return ChatSession.builder()

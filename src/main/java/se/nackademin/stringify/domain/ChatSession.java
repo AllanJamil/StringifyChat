@@ -19,6 +19,9 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+/***
+ * Model for a single chat session containing id, guid, timestamp, key, connectUrl, a list of messages and profiles.
+ */
 public class ChatSession implements IConvertDto<ChatSessionDto> {
 
     @Id
@@ -37,6 +40,10 @@ public class ChatSession implements IConvertDto<ChatSessionDto> {
     @OneToMany (mappedBy = "chatSession", cascade = {CascadeType.ALL, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     List<Profile> profilesConnected;
 
+    /***
+     * Entity to data transfer object.
+     * @return Message data transfer object
+     */
     @Override
     public ChatSessionDto convertToDto() {
         return ChatSessionDto.builder()

@@ -29,6 +29,10 @@ public class ProfileDto implements IConvertEntity<Profile> {
     @ApiModelProperty(notes = "A avatar used by the client-side", example = "avatar20")
     private String avatar;
 
+    /***
+     * Data transfer object to an entity.
+     * @return Message data transfer object
+     */
     @Override
     public Profile convertToEntity() {
         return Profile.builder()
