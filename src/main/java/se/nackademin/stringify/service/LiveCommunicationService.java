@@ -27,7 +27,7 @@ public class LiveCommunicationService implements IService {
     private final ChatSessionRepository chatSessionRepository;
     private final ProfileRepository profileRepository;
 
-    public Message storeMessage(UUID chatSessionId, @Valid Message message) throws ChatSessionNotFoundException {
+    public Message storeMessage(UUID chatSessionId, @Valid Message message) {
         ChatSession chatSession = getChatSession(chatSessionId);
 
         message.setDate(DateUtil.now());
@@ -37,12 +37,11 @@ public class LiveCommunicationService implements IService {
         return messageRepository.save(message);
     }
 
-    public ConnectionNotice storeProfileConnected(UUID chatSessionGuid, @Valid Profile profile)
-            throws ChatSessionNotFoundException {
+    public ConnectionNotice storeProfileConnected(UUID chatSessionGuid, @Valid Profile profile) {
         ChatSession chatSession = getChatSession(chatSessionGuid);
-
-        Optional<Profile> optionalProfile = profileRepository.findByGuid(profile.getGuid());
         ProfileDto connectedProfile;
+        Optional<Profile> optionalProfile = profileRepository.findByGuid(profile.getGuid());
+
         if (optionalProfile.isEmpty()) {
             profile.setId(UUID.randomUUID());
             profile.setChatSession(chatSession);
@@ -62,13 +61,11 @@ public class LiveCommunicationService implements IService {
 
         Message messageToSend = messageRepository.save(message);
 
-
         return new ConnectionNotice(connectedProfile, messageToSend.convertToDto());
     }
 
     @Transactional
-    public ConnectionNotice removeProfileDisconnected(UUID chatSessionGuid, @Valid Profile profile)
-            throws ProfileNotFoundException, ChatSessionNotFoundException {
+    public ConnectionNotice removeProfileDisconnected(UUID chatSessionGuid, @Valid Profile profile) {
 
         Profile profileFound = profileRepository.findAllByGuidAndChatSession_Guid(profile.getGuid(), chatSessionGuid)
                 .orElseThrow(() -> new ProfileNotFoundException("Could not find a profile"));

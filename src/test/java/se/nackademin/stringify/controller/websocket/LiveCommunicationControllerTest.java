@@ -6,7 +6,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import se.nackademin.stringify.controller.response.ConnectionNotice;
 import se.nackademin.stringify.domain.Message;
+import se.nackademin.stringify.domain.Profile;
 import se.nackademin.stringify.dto.MessageDto;
 import se.nackademin.stringify.dto.ProfileDto;
 import se.nackademin.stringify.exception.ChatSessionNotFoundException;
@@ -91,12 +93,38 @@ class LiveCommunicationControllerTest {
         then(liveCommunicationService).should(times(1)).storeMessage(any(UUID.class), any(Message.class));
     }
 
-/*    @Test
-    void notifyOnConnect() {
+    @Test
+    void validChatIdShouldReturnConnectionNotice() {
+        given(liveCommunicationService.storeProfileConnected(any(UUID.class), any(Profile.class)))
+                .willReturn(new ConnectionNotice(mockProfileDto, new MessageDto()));
 
+        liveCommunicationController.notifyOnConnect(UUID.randomUUID(),
+                mockProfileDto);
+
+        then(liveCommunicationService)
+                .should(times(1))
+                .storeProfileConnected(any(UUID.class), any(Profile.class));
     }
 
     @Test
-    void notifyOnDisconnect() {
-    }*/
+    void invalidChatIdShouldThrowChatSessionNotFoundException() {
+        given(liveCommunicationService.storeProfileConnected(any(UUID.class), any(Profile.class)))
+                .willThrow(ChatSessionNotFoundException.class);
+
+        assertThatThrownBy(() -> liveCommunicationController.notifyOnConnect(UUID.randomUUID(), new ProfileDto()));
+    }
+
+    @Test
+    void validChatIdShouldReturnConnectionNoticeOnDisconnect() {
+        given(liveCommunicationService.removeProfileDisconnected(any(UUID.class), any(Profile.class)))
+                .willReturn(new ConnectionNotice(mockProfileDto, new MessageDto()));
+
+        liveCommunicationController.notifyOnDisconnect(UUID.randomUUID(),
+                mockProfileDto);
+
+        then(liveCommunicationService)
+                .should(times(1))
+                .removeProfileDisconnected(any(UUID.class), any(Profile.class));
+    }
+
 }
