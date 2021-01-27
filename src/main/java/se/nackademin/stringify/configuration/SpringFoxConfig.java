@@ -21,7 +21,7 @@ public class SpringFoxConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("se.nackademin.stringify.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }

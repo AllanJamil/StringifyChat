@@ -24,9 +24,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     }
 
     /***
-     * We add stringify-chat as connection handshake.
-     * Allow both localhost and our netlify url as origins.
-     * Enable SockJS.
+     * Configures the connection handshake endpoint and sets allowed origins.
      */
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
@@ -35,5 +33,4 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                         "https://stringify-chat.netlify.app")
                 .withSockJS();
     }
-
 }

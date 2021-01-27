@@ -14,7 +14,6 @@ public class DataSourceConfiguration {
 
     /**
      * Builds HikariDataSource with configuration
-     *
      * @return {@Code HikariDataSource.class}
      */
     @Bean

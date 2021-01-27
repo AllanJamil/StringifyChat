@@ -31,8 +31,7 @@ import java.util.stream.Collectors;
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
-     * Handles all javax validation errors and sends a {@code ResponseEntity} with appropriate
-     * error messages.
+     * Handles all javax validation errors and sends a {@code ResponseEntity} with appropriate error messages.
      */
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
