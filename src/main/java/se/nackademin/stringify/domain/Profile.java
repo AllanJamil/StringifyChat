@@ -36,7 +36,7 @@ public class Profile implements IConvertDto<ProfileDto> {
 
     /***
      * Converts Entity to related data transfer object.
-     * @return {@code ProfileDto.class} data transfer object
+     * @return {@code ProfileDto.class}
      */
     @Override
     public ProfileDto convertToDto() {

@@ -27,8 +27,8 @@ public class ChatSessionDto implements IConvertEntity<ChatSession> {
     private String cipherKey;
 
     /***
-     * Data transfer object to an entity.
-     * @return ChatSession Entity
+     * Converts data transfer object to related entity.
+     * @return {@code ChatSession.class}
      */
     @Override
     public ChatSession convertToEntity() {

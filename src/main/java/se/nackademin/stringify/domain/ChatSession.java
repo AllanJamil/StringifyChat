@@ -42,7 +42,7 @@ public class ChatSession implements IConvertDto<ChatSessionDto> {
 
     /***
      * Converts Entity to related data transfer object.
-     * @return {@code ChatSessionDto.class} data transfer object
+     * @return {@code ChatSessionDto.class}
      */
     @Override
     public ChatSessionDto convertToDto() {

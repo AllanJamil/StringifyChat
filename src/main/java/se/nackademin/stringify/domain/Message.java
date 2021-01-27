@@ -44,7 +44,7 @@ public class Message implements IConvertDto<MessageDto> {
 
     /**
      * Converts Entity to related data transfer object.
-     * @return {@code MessageDto.class} data transfer object
+     * @return {@code MessageDto.class}
      */
     @Override
     public MessageDto convertToDto() {

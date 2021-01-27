@@ -30,8 +30,8 @@ public class ProfileDto implements IConvertEntity<Profile> {
     private String avatar;
 
     /***
-     * Data transfer object to an entity.
-     * @return Profile Entity
+     * Converts data transfer object to related entity.
+     * @return {@code Profile.class}
      */
     @Override
     public Profile convertToEntity() {
