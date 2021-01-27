@@ -19,6 +19,9 @@ import javax.validation.Valid;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * A services to handle live communication business logic
+ */
 @Service
 @RequiredArgsConstructor
 public class LiveCommunicationService implements IService {
@@ -27,8 +30,15 @@ public class LiveCommunicationService implements IService {
     private final ChatSessionRepository chatSessionRepository;
     private final ProfileRepository profileRepository;
 
-    public Message storeMessage(UUID chatSessionId, @Valid Message message) {
-        ChatSession chatSession = getChatSession(chatSessionId);
+    /**
+     * Stores all messages received from clients.
+     *
+     * @param chatSessionGuid The active ChatSession Id.
+     * @param message         The message sent from the client.
+     * @return {@code Message.class}
+     */
+    public Message storeMessage(UUID chatSessionGuid, @Valid Message message) {
+        ChatSession chatSession = getChatSession(chatSessionGuid);
 
         message.setDate(DateUtil.now());
         message.setId(UUID.randomUUID());
@@ -37,6 +47,13 @@ public class LiveCommunicationService implements IService {
         return messageRepository.save(message);
     }
 
+    /**
+     * Persists connected client's profile to the database.
+     *
+     * @param chatSessionGuid The active ChatSession Id.
+     * @param profile         The client's profile
+     * @return {@code ConnectionNotice.class}
+     */
     public ConnectionNotice storeProfileConnected(UUID chatSessionGuid, @Valid Profile profile) {
         ChatSession chatSession = getChatSession(chatSessionGuid);
         ProfileDto connectedProfile;
@@ -64,6 +81,14 @@ public class LiveCommunicationService implements IService {
         return new ConnectionNotice(connectedProfile, messageToSend.convertToDto());
     }
 
+    /**
+     * Deletes disconnected profiles from the database and deletes the active ChatSession
+     * if no profiles are connected.
+     *
+     * @param chatSessionGuid The active ChatSession Id.
+     * @param profile         The client's profile
+     * @return {@code ConnectionNotice.class}
+     */
     @Transactional
     public ConnectionNotice removeProfileDisconnected(UUID chatSessionGuid, @Valid Profile profile) {
 
@@ -98,6 +123,13 @@ public class LiveCommunicationService implements IService {
         return null;
     }
 
+    /**
+     * Gets a ChatSession from the database.
+     *
+     * @param chatSessionGuid Id of an active ChatSession
+     * @return {@code ChatSession}
+     * @throws ChatSessionNotFoundException When a ChatSession cant be found in the database.
+     */
     @Override
     public ChatSession getChatSession(UUID chatSessionGuid) throws ChatSessionNotFoundException {
         return chatSessionRepository.findByGuid(chatSessionGuid)

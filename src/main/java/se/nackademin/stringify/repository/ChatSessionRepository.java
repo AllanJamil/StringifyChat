@@ -7,6 +7,9 @@ import se.nackademin.stringify.domain.ChatSession;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * A repository for ChatSession
+ */
 @Repository
 public interface ChatSessionRepository extends JpaRepository<ChatSession, UUID> {
 

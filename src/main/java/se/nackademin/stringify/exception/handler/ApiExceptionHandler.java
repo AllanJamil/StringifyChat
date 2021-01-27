@@ -23,10 +23,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Handles Api exceptions.
+ */
 @Slf4j
 @RestControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
+    /**
+     * Handles all javax validation errors and sends a {@code ResponseEntity} with appropriate
+     * error messages.
+     */
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers,
@@ -49,22 +56,40 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, headers, status);
     }
 
+    /**
+     * Handles all exceptions related to status code 404 (NOT FOUND)
+     *
+     * @param ex The exception that occurs
+     * @return {@code ResponseEntity.class, ErrorResponse.class}
+     */
     @ExceptionHandler({ChatSessionNotFoundException.class, ProfileNotFoundException.class})
     public ResponseEntity<ErrorResponse> handleNotFoundException(Exception ex) {
         return getAndLogApiException(HttpStatus.NOT_FOUND, ex);
     }
 
+    /**
+     * Handles all exceptions related to status code 503 (SERVICE UNAVAILABLE)
+     *
+     * @param ex The exception that occurs
+     * @return {@code ResponseEntity.class, ErrorResponse.class}
+     */
     @ExceptionHandler(ConnectionLimitException.class)
     public ResponseEntity<ErrorResponse> handleConnectionLimitException(Exception ex) {
         return getAndLogApiException(HttpStatus.SERVICE_UNAVAILABLE, ex);
     }
 
+    /**
+     * Handles all exceptions related to status code 400 (BAD REQUEST)
+     *
+     * @param ex The exception that occurs
+     * @return {@code ResponseEntity.class, ErrorResponse.class}
+     */
     @ExceptionHandler(InvalidKeyException.class)
     public ResponseEntity<ErrorResponse> handleInvalidKeyException(Exception ex) {
         return getAndLogApiException(HttpStatus.BAD_REQUEST, ex);
     }
 
-    private ResponseEntity<ErrorResponse> getAndLogApiException(HttpStatus status, Exception ex ) {
+    private ResponseEntity<ErrorResponse> getAndLogApiException(HttpStatus status, Exception ex) {
         log.warn(ex.getMessage());
 
         return new ResponseEntity<>(ErrorResponse.builder()

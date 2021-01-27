@@ -28,7 +28,7 @@ public class ChatSessionDto implements IConvertEntity<ChatSession> {
 
     /***
      * Data transfer object to an entity.
-     * @return Message data transfer object
+     * @return ChatSession Entity
      */
     @Override
     public ChatSession convertToEntity() {

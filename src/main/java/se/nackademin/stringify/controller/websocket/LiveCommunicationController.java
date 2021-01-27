@@ -23,6 +23,13 @@ public class LiveCommunicationController {
 
     private final LiveCommunicationService liveCommunicationService;
 
+    /**
+     * Receives and transmits messages between clients who connected.
+     *
+     * @param chatSessionGuid DESTINATION: The specific chat session ID to connect to.
+     * @param messageDto      The message sent from the a client connected to session.
+     * @return {@code MessageDto.class}
+     */
     @MessageMapping("/send/meeting/{chatSessionGuid}")
     @SendTo("/queue/meeting/{chatSessionGuid}")
     public MessageDto transmit(@DestinationVariable UUID chatSessionGuid,
@@ -32,6 +39,13 @@ public class LiveCommunicationController {
                 .convertToDto();
     }
 
+    /**
+     * Whenever a client connects to a session a connection notice will be received and published.
+     *
+     * @param chatSessionGuid DESTINATION: The specific chat session ID to connect to.
+     * @param profile         The profile created by the client.
+     * @return {@code ConnectionNotice.class} - Contains a profile and a message.
+     */
     @MessageMapping("/connect/{chatSessionGuid}")
     @SendTo("/queue/connect/{chatSessionGuid}")
     public ConnectionNotice notifyOnConnect(@DestinationVariable UUID chatSessionGuid,
@@ -40,6 +54,13 @@ public class LiveCommunicationController {
                 profile.convertToEntity());
     }
 
+    /**
+     * Whenever a client disconnects from a session a connection notice will be received and published.
+     *
+     * @param chatSessionGuid DESTINATION: The specific chat session ID to connect to.
+     * @param profile         The profile created by the client.
+     * @return {@code ConnectionNotice.class} - Contains a profile and a message.
+     */
     @MessageMapping("/disconnect/{chatSessionGuid}")
     @SendTo("/queue/disconnect/{chatSessionGuid}")
     public ConnectionNotice notifyOnDisconnect(@DestinationVariable UUID chatSessionGuid,

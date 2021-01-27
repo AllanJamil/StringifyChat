@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * A repository for Profile
+ */
 @Repository
 public interface ProfileRepository extends JpaRepository<Profile, UUID> {
 
@@ -16,6 +19,4 @@ public interface ProfileRepository extends JpaRepository<Profile, UUID> {
     Optional<Profile> findAllByGuidAndChatSession_Guid(UUID guid, UUID chatSession_guid);
 
     List<Profile> findAllByChatSession_Id(UUID chatSession_id);
-
-
 }

@@ -31,7 +31,7 @@ public class ProfileDto implements IConvertEntity<Profile> {
 
     /***
      * Data transfer object to an entity.
-     * @return Message data transfer object
+     * @return Profile Entity
      */
     @Override
     public Profile convertToEntity() {

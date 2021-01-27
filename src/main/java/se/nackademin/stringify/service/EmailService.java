@@ -14,12 +14,16 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.UUID;
 
+/**
+ * A service class to handle transactional emails using SendGrid API.
+ */
 @Slf4j
 @Service
 @EnableAsync
 public class EmailService {
 
     private SendGrid sg = new SendGrid(System.getenv("SG_API_KEY"));
+
     void sendMail(Mail mail) {
 
         Request request = new Request();
@@ -36,6 +40,13 @@ public class EmailService {
         }
     }
 
+    /**
+     * Send an invitational email
+     *
+     * @param sendTo    Recipient email
+     * @param invitedBy Sender profile name
+     * @param chatId    The id of an active ChatSession.
+     */
     public void sendInvitationEmail(String sendTo, String invitedBy, UUID chatId) {
         Mail mail = new Mail();
         mail.setFrom(new Email("noreply@stringify.com"));

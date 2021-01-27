@@ -8,6 +8,9 @@ import se.nackademin.stringify.domain.Message;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * A repository for Message
+ */
 @Repository
 public interface MessageRepository extends JpaRepository<Message, UUID> {
 

@@ -37,7 +37,7 @@ public class MessageDto implements IConvertEntity<Message> {
 
     /***
      * Data transfer object to an entity.
-     * @return Message data transfer object
+     * @return Message Entity
      */
     @Override
     public Message convertToEntity() {

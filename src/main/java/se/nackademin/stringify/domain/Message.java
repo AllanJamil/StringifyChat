@@ -42,9 +42,9 @@ public class Message implements IConvertDto<MessageDto> {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private ChatSession chatSession;
 
-    /***
-     * Entity to data transfer object.
-     * @return Message data transfer object
+    /**
+     * Converts Entity to related data transfer object.
+     * @return {@code MessageDto.class} data transfer object
      */
     @Override
     public MessageDto convertToDto() {

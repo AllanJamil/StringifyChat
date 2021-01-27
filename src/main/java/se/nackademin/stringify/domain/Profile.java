@@ -24,7 +24,8 @@ public class Profile implements IConvertDto<ProfileDto> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private UUID guid = UUID.randomUUID();;
+    private UUID guid = UUID.randomUUID();
+    ;
     @NotEmpty
     @NotBlank
     @Size(min = 3, max = 30)
@@ -34,8 +35,8 @@ public class Profile implements IConvertDto<ProfileDto> {
     private ChatSession chatSession;
 
     /***
-     * Entity to data transfer object.
-     * @return Message data transfer object
+     * Converts Entity to related data transfer object.
+     * @return {@code ProfileDto.class} data transfer object
      */
     @Override
     public ProfileDto convertToDto() {

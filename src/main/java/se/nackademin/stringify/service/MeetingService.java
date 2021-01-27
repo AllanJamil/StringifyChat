@@ -53,8 +53,8 @@ public class MeetingService implements IService {
      * @param key The key identified with the chatSession.
      * @return Returns a chatSession to connect with.
      * @throws ChatSessionNotFoundException When a chat session with the given key could not be found.
-     * @throws ConnectionLimitException When the chatSession already has too many connections. (limit: 5)
-     * @throws InvalidKeyException When the key format is invalid.
+     * @throws ConnectionLimitException     When the chatSession already has too many connections. (limit: 5)
+     * @throws InvalidKeyException          When the key format is invalid.
      */
     @Transactional(readOnly = true)
     public ChatSession getChatSessionByKey(String key) {
@@ -90,12 +90,26 @@ public class MeetingService implements IService {
         return chatSession;
     }
 
+    /**
+     * Retrieves profiles connected to a particular ChatSession from
+     * the database.
+     *
+     * @param chatId The id of an active ChatSession
+     * @return A list of profiles.
+     */
     public List<Profile> getProfilesConnected(UUID chatId) {
         ChatSession chatSession = getChatSession(chatId);
 
         return profileRepository.findAllByChatSession_Id(chatSession.getId());
     }
 
+    /**
+     * Gets a ChatSession from the database.
+     *
+     * @param chatSessionGuid Id of an active ChatSession
+     * @return {@code ChatSession}
+     * @throws ChatSessionNotFoundException When a ChatSession cant be found in the database.
+     */
     @Override
     public ChatSession getChatSession(UUID chatSessionGuid) throws ChatSessionNotFoundException {
         return chatSessionRepository.findByGuid(chatSessionGuid)

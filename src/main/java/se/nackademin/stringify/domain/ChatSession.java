@@ -24,6 +24,12 @@ import java.util.UUID;
  */
 public class ChatSession implements IConvertDto<ChatSessionDto> {
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(mappedBy = "chatSession", cascade = CascadeType.ALL)
+    List<Message> messages;
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(mappedBy = "chatSession", cascade = {CascadeType.ALL, CascadeType.REMOVE}, fetch = FetchType.EAGER)
+    List<Profile> profilesConnected;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -33,16 +39,10 @@ public class ChatSession implements IConvertDto<ChatSessionDto> {
     @Column(unique = true)
     private String key;
     private String connectUrl;
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @OneToMany(mappedBy = "chatSession", cascade = CascadeType.ALL)
-    List<Message> messages;
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @OneToMany (mappedBy = "chatSession", cascade = {CascadeType.ALL, CascadeType.REMOVE}, fetch = FetchType.EAGER)
-    List<Profile> profilesConnected;
 
     /***
-     * Entity to data transfer object.
-     * @return Message data transfer object
+     * Converts Entity to related data transfer object.
+     * @return {@code ChatSessionDto.class} data transfer object
      */
     @Override
     public ChatSessionDto convertToDto() {
