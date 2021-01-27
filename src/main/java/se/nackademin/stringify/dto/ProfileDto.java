@@ -20,8 +20,6 @@ public class ProfileDto implements IConvertEntity<Profile> {
 
     @ApiModelProperty(notes = "An id used by the client side")
     private UUID guid;
-
-    @NotEmpty(message = "Please provide the name of the profile")
     @NotBlank(message = "Please provide the name of the profile")
     @Size(min = 3, max = 30, message = "Name has to be at least 3 characters long and max 30 characters long.")
     @ApiModelProperty(required = true, notes = "The name of the profile user", example = "Jake Fish")

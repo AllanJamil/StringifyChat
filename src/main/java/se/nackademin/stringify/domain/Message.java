@@ -28,13 +28,11 @@ public class Message implements IConvertDto<MessageDto> {
     private UUID id;
     private UUID guid = UUID.randomUUID();
 
-    @NotEmpty
-    @NotBlank
+    @NotBlank(message = "Sender cannot be empty!")
     @Size(min = 3, max = 30)
     private String sender;
 
-    @NotBlank
-    @NotEmpty
+    @NotBlank(message = "Content cannot be empty!")
     @Size(min = 1, max = 1000)
     private String content;
     private String avatar;

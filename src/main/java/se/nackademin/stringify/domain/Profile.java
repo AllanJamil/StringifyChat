@@ -25,9 +25,7 @@ public class Profile implements IConvertDto<ProfileDto> {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private UUID guid = UUID.randomUUID();
-    ;
-    @NotEmpty
-    @NotBlank
+    @NotBlank(message = "Please provide the name of the profile")
     @Size(min = 3, max = 30)
     private String name;
     private String avatar;
