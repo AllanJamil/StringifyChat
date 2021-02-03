@@ -6,7 +6,6 @@ import se.nackademin.stringify.util.DateUtil;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 import java.util.UUID;
@@ -15,7 +14,7 @@ import java.util.UUID;
 @Builder
 @Setter
 @Entity
-@Table(name = "messages")
+@Table(name = "message")
 @NoArgsConstructor
 @AllArgsConstructor
 /***
@@ -32,6 +31,7 @@ public class Message implements IConvertDto<MessageDto> {
     @Size(min = 3, max = 30)
     private String sender;
 
+    /*@Column(length = 1000, nullable = false)*/
     @NotBlank(message = "Content cannot be empty!")
     @Size(min = 1, max = 1000)
     private String content;

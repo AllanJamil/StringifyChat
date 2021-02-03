@@ -5,14 +5,13 @@ import se.nackademin.stringify.dto.ProfileDto;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.UUID;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "profiles")
+@Table(name = "profile")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
